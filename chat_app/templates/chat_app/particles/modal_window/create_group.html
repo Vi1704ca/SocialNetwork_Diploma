@@ -1,0 +1,47 @@
+{% load static %}
+
+<form action="{% url 'chat_group_create' %}" method="post" class="new-group-modal hidden" id="new-group-modal">
+    {% csrf_token %}
+    <div class = "header">
+        <div class = "close-modal" id="close-new-group-modal">
+            <img src="{% static 'chat_app/icons/close_modal.svg' %}" alt="">
+        </div> 
+    </div>
+    <h2>Нова група</h2>
+    <div class = "input-block">
+        <label for="make_a_name">Назва</label>
+        <input placeholder = "Введіть назву" type = "text" name="name" class = "make-a-name" id = "make_a_name" required>
+    </div>
+    <div class = "indicator-and-buttons">
+        <div class = "indicator">
+            <img src="{% static 'chat_app/icons/Indicator.svg' %}" alt="">
+        </div>
+        <div class = "photo-buttons">
+            <button class = "add-photo" type = "button">
+                <div>
+                    <img src="{% static 'chat_app/icons/plus.svg' %}" alt="">
+                </div>
+                Додайте фото
+            </button>
+            <button class = "pick-photo" type = "button">
+                <div>
+                    <img src="{% static 'icons/modal/media.svg' %}" alt=""> 
+                </div>
+                Оберіть фото
+            </button>
+        </div>
+    </div>
+    <div class = "members">
+        <p>Учасники</p>
+        <div id="group-members-preview"></div>
+    </div>
+    <input type="hidden" name="members" id="group-members-input">
+    <div class = "action-buttons">
+        <button type="button" class = "back" id="group-modal-back">
+            <img src="{% static 'chat_app/icons/back.svg' %}" alt="">
+        </button>
+        <button type="submit" class = "make-group"> 
+            <img src="{% static 'chat_app/icons/make-group.svg' %}" alt=""> 
+        </button>
+    </div>
+</form>

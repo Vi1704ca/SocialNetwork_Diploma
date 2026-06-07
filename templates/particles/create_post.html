@@ -1,0 +1,52 @@
+{% load static %}
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/create_post.css' %}">
+{% endblock %}
+
+<div class = "modal-create-post " style="display: none;" id="modal-create-post">
+    <form action="{% url 'post_create' %}" class = "create-post-forms"  id="post-create-form" method="post" enctype="multipart/form-data">
+        <span class="close-modal"><img src="{% static '/icons/modal/cross.svg' %}" alt=""></span>
+        <h2>Створення публікації</h2>
+            <label>Назва публікації</label>
+            {{ form_create_post.title.errors }}
+            {{ form_create_post.title }}
+            <label>Тема публікації</label>
+            {{ form_create_post.topic.errors }}
+            {{ form_create_post.topic }}
+
+            <div class="field-with-button">
+                <div class="tags-wrapper">
+                    {{ form_create_post.tags }}
+                </div>
+                <button class="plus-button" type="button" id="tag-button">
+                    <img class="plus-image" src="{% static 'icons/modal/plus.svg' %}" alt="">
+                </button>
+            </div>
+            {{ form_create_post.content.errors }}
+            {{ form_create_post.content }}
+        
+            <div class="field-with-button">
+                <label for="{{ form_create_post.links.id_for_label }}">Посилання</label>
+            </div>
+
+            <div class="link-field-row">
+                <div class="links-list" id="links-list"></div>
+            </div>
+
+            <div class="bottom-buttons">
+                <button class="picture-button" type="button" id="choose-images">
+                    <img class="picture-image" src="{% static '/icons/modal/image.svg' %}" alt="">
+                </button>
+            <input type="file" name="images" id="images-input" accept="image/*" multiple style="display:none;" />           
+                <button class="submit-button" type="submit">
+                    <img class="submit-image" src="{% static '/icons/modal/publication_btn.svg' %}" alt="">
+                </button>
+            </div>
+            <div id="image-preview"></div>
+        </form>
+    </div>  
+</div>
+
+{% block scripts %}
+    <script type="module" src="{% static 'post_app/js/image_view.js' %} "></script>
+{% endblock scripts %}

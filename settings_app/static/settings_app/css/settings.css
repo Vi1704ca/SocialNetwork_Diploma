@@ -1,0 +1,26 @@
+.sidebar nav{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.sidebar nav a{
+    text-decoration: none;
+    color: rgba(129, 129, 141, 1);
+    display: inline-flex;
+    align-items: center;
+    font-size: 1rem;
+    font-family: var(--fontMedium);
+    padding:0.75vh 1.25vh;
+    border-radius:0.5vw;
+    font-weight: 500;
+}
+
+.sidebar nav .personal-information{
+    color: var(--colorTextDefault);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.875rem;
+    text-decoration-thickness: 0.125rem;
+}

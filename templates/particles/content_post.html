@@ -1,0 +1,17 @@
+{% load static %}
+<div class = "make-publication">
+    <textarea name="" id="" placeholder = "Текст публікації"></textarea>
+    <div class = "buttons">
+        <button class = "smile-btn">
+            <img src="{% static 'icons/modal/smile.svg' %}" class = "smile-img">
+        </button>
+        <button class = "start-making-publication-btn" id="show-modal-create">
+            <img src="{% static 'icons/modal/start_making_publication.svg' %}" class = "start-making-publication-img" id="open-modal-post">
+        </button>
+    </div>
+</div>
+
+<div class="post-list">
+    {% include 'particles/show_post.html' %}
+    <div id="postLoaderLine" style="width: 100%; height: 1px;"></div>
+</div>

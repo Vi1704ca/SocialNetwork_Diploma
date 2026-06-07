@@ -1,0 +1,81 @@
+{% load static %}
+
+<section class="chat-messages">
+    <div class="chat-block-header">
+        <div class="header-left">
+            <div class="header-icon-wrapper">
+                <img src="{% static 'icons/logo/chat.svg' %}" alt="">
+                <span class="notification-badge">2</span>
+            </div>    
+            <h3>Повідомлення</h3>
+        </div>
+        <button class="view-all-btn">Дивитись всі</button>
+    </div>
+
+    <div class="chats-list">
+        {% for chat in personal_chats %} 
+            {% for person in chat.users.all %} 
+                {% if person.id != request.user.id %}
+                    
+                    <button type="button" class="chat-user-button" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
+                        <div class="users-info-block">
+                            <div class="avatar-wrapper">
+                                <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                                <span class="status-dot online"></span>
+                            </div>
+                            
+                            <div class="message-meta-wrapper">
+                                <div class="meta-top">
+                                    <h4 class="user-name">{{ person.nickname|default:person.email }}</h4>
+                                    <span class="message-time">{{ chat.last_message_time }}</span>
+                                </div>
+                                <div class="meta-bottom">
+                                    <p class="user-message">{{ chat.last_message_text|truncatechars:28 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+
+                {% endif %}
+            {% endfor %}
+        {% empty %}
+        <button type="button" class="chat-user-button">
+            <div class="users-info-block">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                    <span class="status-dot online"></span>
+                </div>
+
+                <div class="message-meta-wrapper">
+                    <div class="meta-top">
+                        <h4 class="user-name">Jane Cooper</h4>
+                        <span class="message-time">09:41</span>
+                    </div>
+                    <div class="meta-bottom">
+                        <p class="user-message">Привіт! Як справи ?</p>
+                    </div>
+                </div>
+            </div>
+        </button>
+        <button type="button" class="chat-user-button">
+            <div class="users-info-block">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                    <span class="status-dot online"></span>
+                </div>
+
+                <div class="message-meta-wrapper">
+                    <div class="meta-top">
+                        <h4 class="user-name">Jane Cooper</h4>
+                        <span class="message-time">25.04.2025</span>
+                    </div>
+                    <div class="meta-bottom">
+                        <p class="user-message">Привіт!</p>
+                    </div>
+                </div>
+            </div>
+        </button>
+            <!-- <p class="empty-chats">Чатів поки що немає</p> -->
+        {% endfor %}
+    </div>
+</section>

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'chat_app/css/chat.css' %}">
+    <link rel="stylesheet" href="{% static 'chat_app/css/modal.css' %}">
+{% endblock %}
+
+{% block title %} Чат {% endblock %}
+
+{% block meta %} 
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="current-user-id" content="{{ request.user.id }}">
+{% endblock %}
+
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content %}
+    <div class = "chat-page">
+        {% include 'chat_app/particles/chat_contacts.html' %}
+        {% include 'chat_app/particles/chat_main.html' %}
+        {% include 'chat_app/particles/chat_sidebar.html' %}
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src = "{% static 'js/links-color.js' %}"></script>
+    <script src="{% static 'chat_app/js/chat.js' %}"></script>
+    <script src="{% static 'chat_app/js/modal_window.js' %}"></script>
+{% endblock %}

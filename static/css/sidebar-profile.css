@@ -1,0 +1,95 @@
+.sidebar-profile{
+    background-color: #ffffff;
+    width:100%;
+    height: auto;
+    border-radius: 0.625rem; 
+    border: solid 1px rgba(205, 206, 210, 1);
+    display:flex;
+    padding: 0.5rem; 
+    gap: 1rem; 
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.user-info{
+    display:flex;
+    gap: 1.5rem;
+    flex-direction:column;
+    align-items:center;
+}
+
+.avatar-image{
+    position:relative;
+    border-radius:50%; 
+    width: 6rem;
+    height: 6rem;  
+}
+
+.avatar-image img{
+    position:absolute;
+    border-radius:50%; 
+    height:100%;
+    width:100%;
+    object-fit: cover;
+}
+
+.user-details{
+    display:flex;
+    gap: 0.625rem;
+    flex-direction:column;
+    align-items:center;
+}
+
+.stats-section{
+    display:flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    gap: 1rem;
+}
+
+.posts-stat, .readers-stat, .friends-stat{
+    display:flex;
+    width: 7.31rem;
+    align-items:center;
+    flex-direction:column;
+    gap: 0.43rem;
+    min-height: 3rem;
+    height: auto;
+}
+
+.user-info{
+    color: rgba(7, 10, 28, 1);
+}
+
+.user-name{
+    font-size: 1.5rem;
+    font-weight: 700;
+    /* font-style: bold; -- invalid, removed (bold is a font-weight) */
+}
+
+.stats-section p{
+    color:#81818D;
+    font-size: 1rem;
+}
+
+.readers-stat{
+    border-left: solid 1px rgba(205, 206, 210, 1);
+    border-right: solid 1px rgba(205, 206, 210, 1);
+}
+
+.avatar-container {
+    position: relative;
+}
+
+.status-indicator{
+    position: absolute;
+    width: 1.125rem;
+    height: 1.125rem;
+    left: 4.375rem;
+    top: 4.375rem;
+}
+
+.status-indicator img {
+    width: 100%;
+    height: 100%;
+}

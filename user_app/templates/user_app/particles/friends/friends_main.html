@@ -1,0 +1,17 @@
+<div class="friends-main" id="friendsMain">
+    {% for key, section in sections.items %}
+        <div class="section" data-section-link="{{section.title}}">
+            <div class="section-header">
+                <h2>{{section.title}}</h2>
+                <button type="button" data-section-link="{{ section.title }}">Дивитись всі </button>
+            </div>
+            <div class="section-main" id="{{key}}MainList">
+                {% if section.users %}
+                    {% include "user_app/particles/friends/friends_cards.html" with users=section.users section=key %}
+                {% else %}
+                    <p class="empty-section-message">Порожньо</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>

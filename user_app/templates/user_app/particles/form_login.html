@@ -1,0 +1,15 @@
+{% load static %}
+<div class="form-login" id="form_login">
+    <div>
+        <span class = "switchForm" id="link-register">Реєстрація</span>
+        <span class = "switchForm" id="link-login">Авторизація</span>
+    </div>
+    <p class = "title-welcome">Раді тебе знову бачити!</p>
+    <form action="{% url 'login' %}" method="post" id="login-form">
+        {% csrf_token %}
+        {{ form_login.as_p }}
+        <button type="submit">
+            <img src="{% static 'user_app/icon/authorize.svg' %}" alt="">
+        </button>
+    </form>
+</div>

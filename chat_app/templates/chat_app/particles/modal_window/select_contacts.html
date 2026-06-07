@@ -1,0 +1,44 @@
+{% load static %}
+<div class="hidden" id="select-members">
+    <div class="header">
+        <div class="close-modal" id="close-select-members">
+            <img src="{% static 'icons/modal/cross.svg' %}" alt="">
+        </div>
+    </div>
+
+    <h2>Нова група</h2>
+    <div class = "search">
+        <img src="{% static 'chat_app/icons/search.svg' %}" alt="">
+        <input type="text" placeholder="Пошук" id="group-search-input">
+    </div>
+
+    <p class="selected-count">Вибрано: 0</p>
+    <section>
+        <p class="leter-start">A</p>
+        <div class="add-members" id="select-members-list">
+            {% for person in users %}
+            <div class="member">
+                <div class="avatar-member">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                    <div class="status">
+                        <img src="{% static 'icons/logo/online-status.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="name-member">
+                    <p>{{ person.nickname }}</p>
+                    <input type="checkbox" value="{{ person.id }}" class="group-member-checkbox">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class = "action-buttons">
+        <button type="button" class = "cancel" id="cancel-select-members">
+             <img src="{% static 'chat_app/icons/cancel.svg' %}" alt="">
+        </button>
+        <button type="button" class = "next" id="select-members-next"> 
+            <img src="{% static 'chat_app/icons/next.svg' %}" alt=""> 
+        </button>
+    </div>
+</div> 

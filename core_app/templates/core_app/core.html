@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static 'css/core.css' %}">
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+    <div class="requests">
+        <div class="inquiry">
+            <span>
+                <img src="{% static 'icons/logo/requests.svg' %}" alt="">
+                <p>Запити</p>
+            </span>
+            <a href="{% url 'friends' %}">Дивитись всі</a>
+        </div>
+        <div class="followers">
+            <div class="info-followers">
+                <div class = "follower">
+                    <div>
+                        <img class="avatar-follower" src="{% static 'icon/Follower1.jpg' %}" alt="">
+                    </div>
+                    <span class="info-follower">
+                        <p>Yehor Aung</p>
+                        <p class = "follower-followers">4.3к підписників</p>
+                    </span>
+                </div>
+                
+                <div class = "follower">
+                    <div>
+                        <img class="avatar-follower" src="{% static 'icon/Follower2.jpg' %}" alt="">
+                    </div>
+                    <span class="info-follower">
+                        <p>Ann Ann</p>
+                        <p class = "follower-followers">1.6к підписників</p>
+                    </span>
+                </div>
+                <div class = "follower">
+                    <div>
+                        <img class="avatar-follower" src="{% static 'icon/Follower3.jpg' %}" alt="">
+                    </div>
+                    <span class="info-follower">
+                        <p>Yeugen Jenua</p>
+                        <p class = "follower-followers">10.3к підписників</p>
+                    </span>
+                </div>                        
+            </div>
+        </div>
+    </div>
+    <div class="message-people">
+        <div class="messages">
+                <span>
+                    <img src="{% static 'icons/logo/chat.svg' %}" alt="">
+                    <p>Повідомлення</p>
+                </span>
+                <p>Дивитись всі</p>
+        </div>
+            
+        <div class="message-user">
+            <div class="user-message">
+                
+                <div class = "message">
+                    <div class="avatar-friends"> 
+                        <img class="avatar-friends" src="{% static 'icon/user1.jpg' %}" alt="">
+                    </div>
+                    <span class="message-friends">
+                        <span class = "nickname-message">
+                            <p>Mona Lisa</p>
+                            <p>Привіт! Як справи ?</p>
+                        </span>
+                        <p class = "time">09:41</p>
+                    </span>
+                </div>
+
+                <div class = "message">
+                     <div class="avatar-friends"> 
+                        <img class="avatar-friends" src="{% static 'icon/user2.jpg' %}" alt="">
+                    </div>
+                    <span class="message-friends">
+                        <span class = "nickname-message">
+                            <p>Ann Ti</p>
+                            <p>Привіт!</p>
+                        </span>
+                        <p class = "time">25.04.2025</p>
+                    </span>
+                 </div>
+
+                <div class = "message">
+                    <div class="avatar-friends"> 
+                        <img class="avatar-friends" src="{% static 'icon/user3.jpg' %}" alt="">
+                    </div>
+                   <span class="message-friends">
+                        <span class = "nickname-message">
+                            <p>Ness Ty</p>
+                            <p>Привіт!</p>
+                        </span>
+                       <p class = "time">25.04.2025</p>
+                   </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+   
+{% endblock %}
+
+
+{% block script %}
+    <script type="module" src="{% static 'core_app/js/modal.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+{% endblock %}

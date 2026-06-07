@@ -1,0 +1,264 @@
+.plus-button, #tag-button{
+    border-radius:50%;
+    width:1.25rem;
+    height:1.25rem;
+}
+
+.plus-button img {
+    width: 100%;
+    height: 100%;
+
+}
+
+.picture-button{
+    border-radius:50%;
+    width:2.5rem;
+    height:2.5rem;
+}
+
+.submit-button{
+    border-radius: 77.125rem;
+    width:8.125rem;
+    height:2.5rem;
+}
+
+.close-modal {
+    display: flex;              /* центрируем картинку */
+    align-items: center;
+    justify-content: center;
+    position: absolute;        /* вместо float */
+    right: 1rem;               /* расстояние от правого края */
+    top: 1rem;                 /* расстояние от верхнего края */
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+form button { 
+    display: flex;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+form button img, form span img {
+    object-fit: cover;
+    width:100%;
+    height:100%;
+}
+
+.create-post-forms {
+    flex-shrink: 0; 
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    width: 48.31rem;
+    height: 41.8rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1.5rem 2.75rem;
+    background-color: white;
+    border-radius: 1.25rem;
+}
+
+
+#modal-create-post {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.create-post-forms textarea{
+    width: 42.81rem;
+    height: 7.87rem;
+    flex-shrink: 0; 
+    border-radius: 0.625rem;
+    border: 1px solid rgba(205, 206, 210, 1);
+    padding: 1rem;
+    gap: 0.625rem;
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(7, 10, 28, 1);
+    font-family: var(--fontRegular);
+    overflow-y: auto;
+}
+
+.create-post-forms textarea:focus, .create-post-forms input:focus{
+    outline: none;
+    border: 1px solid rgba(205, 206, 210, 1);
+}
+
+.create-post-forms input{
+    display:flex;
+    border-radius:0.625rem;
+    width:21.4rem;
+    height:2.625rem;
+    border:1px solid rgba(205, 206, 210, 1);
+    gap:0.625rem;
+    padding: 0.625rem 1rem; 
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(7, 10, 28, 1);
+    font-family: var(--fontRegular);
+}
+
+.field-with-button{
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+label {
+    display: flex;
+    gap: 0.75rem;
+    font-family: var(--fontRegular);
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(7, 10, 28, 1);
+}
+
+.link-field-row,
+.tags-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.create-post-forms input[type="file"]{
+    display: none;
+}
+
+.bottom-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    flex-wrap: nowrap;
+}
+
+.create-post-forms .smile-button,
+.create-post-forms .submit-button{
+    flex: 0 0 auto;
+}
+
+.create-post-forms .plus-button{
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.create-post-forms .picture-button{
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.create-post-forms .tags-wrapper .tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.create-post-forms .tags-wrapper .tags label{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.create-post-forms h2{
+    font-size: 2.125rem;
+    font-family: var(--fontRegular);
+    font-weight: 500;
+    color: rgba(7, 10, 28, 1);
+}
+
+.create-post-forms .tags div{
+    display: flex;
+    width: 5.6875rem;
+    height: 1.75em;
+    border-radius: 6px;
+    gap: 2.6rem;
+    padding: 0.625rem;
+    background-color: #E9E5EE;
+    color: #543C52;
+    font-size: 0.875rem;
+    font-weight: 400;
+    font-family: var(--fontRegular);
+    align-items: center;
+    justify-content: center;
+}
+.create-post-forms .tags div input[type="checkbox"]{
+    display: none;
+}
+
+#image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 42.8rem;
+    margin-top: 10px;
+}
+
+.preview-container {
+    position: relative;
+    width: 13.6rem;
+    height: 16.5rem;
+}
+
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+    display: block;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.remove-image-btn img {
+    width: 100%; 
+    height: 100%;
+    object-fit: contain;
+}
+
+.link-field-row {
+    width: 21.4rem;
+}
+
+.link-item-row {
+    display: flex;      
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;          
+    width: 100%;        
+    margin-bottom: 10px;
+}
+
+.dynamic-input {
+    flex: 1; 
+}
+
+.actions-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}

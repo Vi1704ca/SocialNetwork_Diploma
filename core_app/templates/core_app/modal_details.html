@@ -1,0 +1,42 @@
+{% load static %}
+
+<div class="modal-overlay" id="userDetailsModal">
+    <div class="modal-card">
+        <h2>Додай деталі про себе</h2>
+        
+        <form id="userDetailsForm" action="{% url 'save_details' %}" method="post">
+            {% csrf_token %}
+            
+            <div class="modal-field-group">
+                <label for="{{ form_details.nickname.id_for_label }}">Псевдонім автора</label>
+                {{ form_details.nickname }}
+                <span class="field-error id_nickname_error"></span>
+            </div>
+
+            <div class="modal-field-group">
+                <label for="{{ form_details.username.id_for_label }}">Ім’я користувача</label>
+                <div class="username-wrapper">
+                    {{ form_details.username }}
+                </div>
+                <span class="field-error id_username_error"></span>
+                
+                <p class="modal-hint">
+                    Або оберіть: 
+                    <span class="hint-suggestions">
+                        {% if suggestions %}
+                            {% for sug in suggestions %}
+                                <a href="#" class="suggested-item" data-username="{{ sug }}">@{{ sug }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <span class="hint-green">Заповніть Ім'я в профілі для підказок</span>
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="modal-submit-btn">Продовжити</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'user_app/css/friends.css' %}">
+{% endblock %}
+
+{% block meta %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+{% endblock %}
+
+{% block title %} Друзі {% endblock %}
+
+{% block sidebar %}
+    {% include "user_app/particles/friends/friends_nav.html" %}
+{% endblock %}
+
+{% block content %}
+    {% include "user_app/particles/friends/friends_cards.html" %}
+    {% include "user_app/particles/friends/friends_main.html" %}
+    {% include "user_app/particles/friends/friends_section.html" %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'user_app/js/friends_section.js' %}"></script>
+    <script src = "{% static 'user_app/js/friends_actions.js' %}"></script>
+{% endblock %}

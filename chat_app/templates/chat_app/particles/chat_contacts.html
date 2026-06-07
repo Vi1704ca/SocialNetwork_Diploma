@@ -1,0 +1,133 @@
+{% load static %}
+<aside class = "left-sidebar">
+    <button class="create-chat">
+        <img src="{% static 'chat_app/icons/make_group_chat.svg' %}" alt="">
+    </button>
+    <div class="contacts">
+        <div class = "contacts-header">
+            <div>
+                <img src="{% static 'icons/logo/people.svg' %}" alt="">
+            </div>
+            <h3>Контакти</h3>
+        </div>
+        <div class="contacts-search">
+            <div class="search-icon">
+                <img src="{% static 'chat_app/icons/search.svg' %}" alt="">
+            </div>
+            <input type="text" placeholder="Пошук">
+        </div>
+        <div class="users">
+            {% for person in users %}
+            <button type="button" class="user chat-user-button" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">{{ person.nickname }}</p>
+            </button>
+            {% endfor %}
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            <div class="user">
+                <div class="avatar-wrapper">
+                    <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
+                </div>
+                <p class="user-name">Cameron Williamson</p>
+            </div>
+            
+        </div>
+    </div>
+</aside>

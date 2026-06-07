@@ -1,0 +1,28 @@
+{% load static %}
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/create_tag.css' %}">
+{% endblock %}
+
+<div id="tag-modal" class="modal-overlay" style="display: none;">
+    <form action="{% url 'tag_create' %}" method="post" id="tag-form-element" class="modal-content">
+        {% csrf_token %}
+        <button type="button" class="close-modal-tag">
+            <img src="{% static 'post_app/icons/cross.svg' %}" alt="Закрыть">
+        </button>
+        
+        <h2>Додати хештег</h2>
+        <div id="tag-errors"></div>
+
+        <p>Назва</p>
+        {{ form_tag.name }}
+
+        <div class="modal-buttons">
+            <button type="button" id="cancel-tag">
+                <img src="{% static 'post_app/icons/cancel_btn.svg' %}" alt="Отмена">
+            </button>
+            <button type="submit" id="save-tag">
+                <img src="{% static 'post_app/icons/save_btn.svg' %}" alt="Сохранить">
+            </button>
+        </div>
+    </form>
+</div>

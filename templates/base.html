@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block meta %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sidebar-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/post.css' %}">
+    
+    {% block links %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% block modal-create-post %}{% endblock modal-create-post %}
+    <header>
+        <nav>
+            <a href="{% url 'home' %}" class = "logo">
+                <img src="{% static 'icons/logo/logo.svg' %}" alt="">
+            </a>
+            {% if request.path != '/auth/' %}
+                <div class = "header-nav">
+                    <a href="{% url 'home' %}" class=""><img src="{% static 'icons/logo/House.svg' %}" alt="">Головна</a>
+                    <a href="{% url 'post' %}" class=""><img src="{% static 'icons/logo/painting.svg' %}" alt="">Мої публікації</a>
+                    <a href="{% url 'friends' %}" class=""><img src="{% static 'icons/logo/people.svg' %}" alt="">Друзі</a>
+                    <a href="{% url 'chat' %}" class=""><img src="{% static 'icons/logo/chat.svg' %}" alt="">Чати</a>
+                    <a href="{% url 'settings' %}" class=""><img src="{% static 'icons/logo/settings.svg' %}" alt="">Налаштування</a>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn"><img src="{% static 'icons/logo/leave.svg' %}" alt=""></button>
+                    </form>
+                </div>
+            {% endif %}
+        </nav>
+        {% block header %}{% endblock %}
+    </header>
+    <main>
+        <div class = "sidebar">
+            {% block sidebar %}
+                <div class="sidebar-profile" onclick="location.href='{% url 'post' %}'">
+                    <div class="user-info">
+                        <div class="avatar-container"> 
+                            <div class="avatar-image">
+                                <img src="{% static 'icons/avatar.jpg' %}" alt=""> 
+                            </div>
+                            <div class="status-indicator">
+                                <img src="{% static 'icons/logo/online-status.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class = "user-details">
+                            <h2 class="user-name">{{ user.nickname|default:"Lina Li" }}</h2>
+                            <p class="user-handle">@{{ user.username|default:"thelili" }}</p>
+                        </div>
+                    </div>
+                    <div class="stats-section">
+                        <div class="posts-stat">
+                            <h2>566</h2>
+                            <p>Дописи</p>
+                        </div>
+                        <div class="readers-stat">
+                            <h2>12.1K</h2>
+                            <p>Читачі</p>
+                        </div>
+                        <div class = "friends-stat" onclick="location.href='{% url 'friends' %}'">
+                            <h2>222</h2>
+                            <p>Друзі</p>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
+    </main>
+    {% block scripts %}
+    <script src = "{% static 'js/links-color.js' %}"></script>
+    <script src="{% static 'user_app/js/friends_section.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

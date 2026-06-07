@@ -1,0 +1,64 @@
+#tag-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.85) !important; /* Затемнение должно быть видно */
+    
+    /* Центрирование */
+    display: none; /* Станет flex через JS */
+    justify-content: center !important;
+    align-items: center !important;
+    
+    z-index: 999999 !important; /* Максимальный приоритет */
+}
+
+/* Обязательно добавь стили для контента, чтобы он не был нулевого размера */
+#tag-modal .modal-content-wrapper, 
+#tag-modal .modal-content {
+    background: white !important;
+    padding: 30px !important;
+    border-radius: 15px !important;
+    min-width: 300px !important;
+    min-height: 200px !important;
+    color: black !important;
+    display: block !important;
+}
+
+/* Стили для кнопок внутри модалки, чтобы они не разлетались */
+#tag-modal h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+#tag-modal .close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-overlay {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000; /* Очень высокое значение */
+    display: none; /* Переключается на flex в JS */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}

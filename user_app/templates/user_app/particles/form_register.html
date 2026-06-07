@@ -1,0 +1,14 @@
+{% load static %}
+<div class="form-register" id="form_register">
+    <div>
+        <span class = "switchForm" id="link-register">Реєстрація</span>
+        <span class = "switchForm" id="link-login">Авторизація</span>
+    </div>
+    <p class = "title-welcome">Приєднуйся до World IT</p>
+    <form id="register-form" action="{% url 'register' %}" method="post" >
+        {{ form_register.as_p }}
+        <button type="submit" class = "button-submit">
+            <img src="{% static 'user_app/icon/make_an_account.svg' %}" class = "image-submit" alt="">
+        </button>
+    </form>
+</div>

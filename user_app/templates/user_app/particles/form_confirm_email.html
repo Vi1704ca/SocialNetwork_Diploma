@@ -1,0 +1,21 @@
+{% load static %}
+<div class="form-confirm" id="form_confirm_email"> 
+    <h2>Підтвердження пошти</h2>
+    <p class = "confirm-email-p">Ми надіслали 6-значний код на вашу пошту (<span id="user-email">you@example.com</span>). Введіть його нижче, щоб підтвердити акаунт</p>
+    <form id="confirm-form" action="{% url 'confirm' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="email" id="confirm-email">
+        <label for="">Код підтвердження</label>
+        <div class="otp-input">
+
+            {{ form_confirm.as_p }}
+        </div>
+    
+
+        <button type="submit">
+            <img src="{% static 'user_app/icon/submit.svg' %}" alt="">
+        </button>
+    </form>
+    <p id="back">Назад</p>
+</div>
+
