@@ -62,7 +62,6 @@
 
   function handleMessage(event) {
     const data = JSON.parse(event.data)
-    console.log('presence event:', data)
 
     if (data.type === 'presence_sync') {
       syncOnlineUsers(data.online_users || [])
@@ -83,19 +82,8 @@
     }
 
     if (data.type === 'unread_update') {
-  applyUnreadCounts(data.unread_counts || {})
-
-  if (data.last_message && window.ChatUI?.updateChatPreview) {
-    window.ChatUI.updateChatPreview(
-      data.last_message.chat_id,
-      data.last_message.message,
-      data.last_message.created_at,
-      data.last_message.sender_id
-    )
-  }
-
-  return
-}
+      applyUnreadCounts(data.unread_counts || {})
+    }
   }
 
   function connect() {
@@ -112,8 +100,8 @@
   document.addEventListener('DOMContentLoaded', connect)
 
   window.Presence = {
-  onlineUsers,
-  setUserStatus,
-  syncOnlineUsers,
-}
+    onlineUsers,
+    setUserStatus,
+    syncOnlineUsers,
+  }
 })()

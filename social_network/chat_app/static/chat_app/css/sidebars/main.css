@@ -14,10 +14,6 @@
     gap: 1rem;
 }
 
-.header-icon-wrapper {
-    position: relative;
-}
-
 .chat-avatar-wrapper {
     width: 42px;
     height: 42px;

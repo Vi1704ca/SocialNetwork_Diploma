@@ -15,15 +15,14 @@
   }
 
   function cacheElements() {
-  elements.chatTitle = document.getElementById('chat-title')
-  elements.chatStatus = document.getElementById('chat-status')
-  elements.chatAvatar = document.getElementById('chat-avatar')
-  elements.chatHeaderStatusIndicator = document.getElementById('chat-header-status-indicator')
-  elements.chatWindow = document.getElementById('chat-window')
-  elements.chatHeader = document.querySelector('.chat-header')
-  elements.chatForm = document.getElementById('chat-message-form')
-  elements.chatInput = document.getElementById('chat-input')
-}
+    elements.chatTitle = document.getElementById('chat-title')
+    elements.chatStatus = document.getElementById('chat-status')
+    elements.chatAvatar = document.getElementById('chat-avatar')
+    elements.chatWindow = document.getElementById('chat-window')
+    elements.chatHeader = document.querySelector('.chat-header')
+    elements.chatForm = document.getElementById('chat-message-form')
+    elements.chatInput = document.getElementById('chat-input')
+  }
 
   function setChatActive(active) {
     elements.chatHeader?.classList.toggle('hidden', !active)
@@ -49,13 +48,11 @@
     }
 
     if (elements.chatWindow) {
-  elements.chatWindow.classList.remove('placeholder-active')
-  elements.chatWindow.innerHTML = ''
-
-  window.renderMessages(elements.chatWindow, data.messages || [], state.currentUserId)
-
-  scrollToBottom()
-}
+      elements.chatWindow.classList.remove('placeholder-active')
+      elements.chatWindow.innerHTML = ''
+      window.renderMessages(elements.chatWindow, data.messages || [], state.currentUserId)
+      scrollToBottom()
+    }
 
     setChatActive(true)
     window.ChatSocket.connect(data.chat_id)
@@ -63,137 +60,84 @@
 
   function scrollToBottom() {
     if (!elements.chatWindow) return
-
-      const scroll = () => {
-        elements.chatWindow.scrollTop = elements.chatWindow.scrollHeight
-      }
-
-      requestAnimationFrame(scroll)
-      setTimeout(scroll, 100)
-      setTimeout(scroll, 300)
-    }
+    elements.chatWindow.scrollTop = elements.chatWindow.scrollHeight
+  }
 
   function addMessage(data) {
-  if (!elements.chatWindow) return
+    if (!elements.chatWindow) return
 
-  console.log('add message:', data)
+    const bubble = window.createMessageBubble(
+      data.message || '',
+      data.sender_id === state.currentUserId,
+      data.created_at,
+      data.sender_name,
+      data.images || [],
+      data.is_read || false,
+      data.message_id || null
+    )
 
-  const bubble = window.createMessageBubble(
-    data.message || '',
-    Number(data.sender_id) === Number(state.currentUserId),
-    data.created_at,
-    data.sender_name,
-    data.images || [],
-    data.is_read || false,
-    data.message_id || data.id || null
-  )
-
-  elements.chatWindow.appendChild(bubble)
-  scrollToBottom()
-}
-
-function updateChatPreview(chatId, message, createdAt, senderId = null) {
-  let button = document.querySelector(`.chat-user-button[data-chat-id="${chatId}"]`)
-
-  if (!button && senderId) {
-    button = document.querySelector(`.chat-user-button[data-chat-user="${senderId}"]`)
+    elements.chatWindow.appendChild(bubble)
+    scrollToBottom()
   }
 
-  if (!button) return
-
-  if (chatId) {
-    button.dataset.chatId = chatId
-  }
-
-  const messageElement = button.querySelector('.user-message')
-  const timeElement = button.querySelector('.message-time')
-
-  if (messageElement) {
-    messageElement.textContent = message || 'Фото'
-  }
-
-  if (timeElement) {
-    const formattedTime = window.formatTime?.(createdAt)
-
-    if (formattedTime) {
-      timeElement.textContent = formattedTime
-      timeElement.dataset.time = createdAt
-    }
-  }
-
-  button.dataset.lastMessageTime = Date.now()
-  sortChatsByLastMessage()
-}
-
-  function updateSectionUnreadBadge(selector, count) {
-  const badge = document.querySelector(selector)
-  const text = badge?.querySelector('span')
-
-  if (!badge || !text) return
-
-  if (count > 0) {
-    text.textContent = count
-    badge.style.display = 'flex'
-  } else {
-    text.textContent = ''
-    badge.style.display = 'none'
-  }
-}
-
-function applyUnreadCounts(counts) {
-  const safeCounts = counts || {}
-  let personalTotal = 0
-  let groupTotal = 0
-
-  Object.entries(safeCounts).forEach(([chatId, count]) => {
-    const normalizedCount = Number(count) || 0
+  function updateChatPreview(chatId, message, createdAt) {
     const button = document.querySelector(`.chat-user-button[data-chat-id="${chatId}"]`)
-
-    updateChatButtonUnread(chatId, normalizedCount)
-
     if (!button) return
 
-    if (button.dataset.chatType === 'group' || button.closest('.group-chats')) {
-      groupTotal += normalizedCount
-    } else {
-      personalTotal += normalizedCount
+    const messageElement = button.querySelector('.user-message')
+    const timeElement = button.querySelector('.message-time')
+
+    if (messageElement) {
+      messageElement.textContent = message || 'Фото'
     }
-  })
 
-  updateSectionBadge('.personal-unread-badge', personalTotal)
-  updateSectionBadge('.group-unread-badge', groupTotal)
-  updateTotalBadge(personalTotal + groupTotal)
-}
+    if (timeElement) {
+      timeElement.textContent = createdAt || ''
+    }
 
-function updateSectionBadge(selector, count) {
-  const badge = document.querySelector(selector)
-  const badgeText = badge?.querySelector('span')
+    button.dataset.lastMessageTime = Date.now()
+    sortChatsByLastMessage()
+  }
 
-  if (!badge || !badgeText) return
+  function updateUnreadBadge(chatId, count) {
+    const button = document.querySelector(`.chat-user-button[data-chat-id="${chatId}"]`)
+    if (!button) return
 
-  badgeText.textContent = count > 0 ? count : ''
-  badge.style.display = count > 0 ? 'flex' : 'none'
-}
+    button.classList.toggle('has-unread', count > 0)
+
+    let badge = button.querySelector('.chat-unread-count')
+
+    if (!badge) {
+      badge = document.createElement('div')
+      badge.className = 'chat-unread-count'
+      button.querySelector('.avatar-wrapper')?.appendChild(badge)
+    }
+
+    badge.textContent = count > 0 ? count : ''
+    badge.style.display = count > 0 ? 'flex' : 'none'
+  }
+
+  function applyUnreadCounts(counts) {
+    Object.entries(counts || {}).forEach(([chatId, count]) => {
+      updateUnreadBadge(chatId, Number(count))
+    })
+
+    const total = Object.values(counts || {}).reduce((sum, count) => sum + Number(count), 0)
+    const badgeText = document.querySelector('.notification-badge span')
+    const badge = badgeText?.closest('.notification-badge')
+
+    if (badgeText) {
+      badgeText.textContent = total > 0 ? total : ''
+    }
+
+    if (badge) {
+      badge.style.display = total > 0 ? 'flex' : 'none'
+    }
+  }
 
   function clearUnread(chatId) {
-  if (window.UnreadMessages?.updateChatButtonUnread) {
-    window.UnreadMessages.updateChatButtonUnread(chatId, 0)
+    updateUnreadBadge(chatId, 0)
   }
-
-  const counts = {}
-
-  document.querySelectorAll('.chat-user-button[data-chat-id]').forEach(button => {
-    const badge = button.querySelector('.chat-unread-count')
-    const count = Number(badge?.textContent || 0)
-    counts[button.dataset.chatId] = count
-  })
-
-  if (window.UnreadMessages?.applyUnreadCounts) {
-    window.UnreadMessages.applyUnreadCounts(counts)
-  } else {
-    applyUnreadCounts(counts)
-  }
-}
 
   function sortChatsByLastMessage() {
     const list = document.querySelector('.chats-list')
@@ -229,61 +173,35 @@ function updateSectionBadge(selector, count) {
   }
 
   function updateCurrentHeaderFromList() {
-  if (!state.currentChatId || !elements.chatStatus) return
+    if (!state.currentChatId || !elements.chatStatus) return
 
-  const currentButton = document.querySelector(`.chat-user-button[data-chat-id="${state.currentChatId}"]`)
-  const userId = currentButton?.dataset.chatUser
+    const currentButton = document.querySelector(`.chat-user-button[data-chat-id="${state.currentChatId}"]`)
+    const userId = currentButton?.dataset.chatUser
+    if (!userId) return
 
-  if (!userId) {
-    if (elements.chatHeaderStatusIndicator) {
-      elements.chatHeaderStatusIndicator.style.display = 'none'
-      elements.chatHeaderStatusIndicator.removeAttribute('data-user-id')
-      elements.chatHeaderStatusIndicator.classList.remove('online', 'offline')
-    }
-    return
+    const isOnline = document
+      .querySelector(`.status-indicator[data-user-id="${userId}"]`)
+      ?.classList.contains('online')
+
+    renderPersonalStatus(Boolean(isOnline))
   }
 
-  updateHeaderStatusIndicator(userId)
-}
+  function updateHeaderPresence(userId, isOnline) {
+    const currentButton = document.querySelector(`.chat-user-button[data-chat-id="${state.currentChatId}"]`)
 
- function updateHeaderPresence(userId, isOnline) {
-  const currentButton = document.querySelector(`.chat-user-button[data-chat-id="${state.currentChatId}"]`)
-
-  if (currentButton?.dataset.chatUser === String(userId)) {
-    renderPersonalStatus(isOnline)
-
-    if (elements.chatHeaderStatusIndicator) {
-      elements.chatHeaderStatusIndicator.dataset.userId = String(userId)
-      elements.chatHeaderStatusIndicator.style.display = ''
-      elements.chatHeaderStatusIndicator.classList.toggle('online', isOnline)
-      elements.chatHeaderStatusIndicator.classList.toggle('offline', !isOnline)
+    if (currentButton?.dataset.chatUser === String(userId)) {
+      renderPersonalStatus(isOnline)
     }
   }
-}
-function renderPersonalStatus(isOnline) {
-  if (!elements.chatStatus) return
 
-  elements.chatStatus.innerHTML = `
-    <span>${isOnline ? 'В мережі' : 'Не в мережі'}</span>
-  `
-}
+  function renderPersonalStatus(isOnline) {
+    if (!elements.chatStatus) return
 
- function isUserOnline(userId) {
-  return window.Presence?.onlineUsers?.has(String(userId)) || false
-}
-
-function updateHeaderStatusIndicator(userId) {
-  if (!elements.chatHeaderStatusIndicator || !userId) return
-
-  const isOnline = isUserOnline(userId)
-
-  elements.chatHeaderStatusIndicator.dataset.userId = userId
-  elements.chatHeaderStatusIndicator.style.display = ''
-  elements.chatHeaderStatusIndicator.classList.toggle('online', isOnline)
-  elements.chatHeaderStatusIndicator.classList.toggle('offline', !isOnline)
-
-  renderPersonalStatus(isOnline)
-}
+    elements.chatStatus.innerHTML = `
+      <span class="chat-status-dot ${isOnline ? 'online' : ''}"></span>
+      <span>${isOnline ? 'В мережі' : 'Не в мережі'}</span>
+    `
+  }
 
   async function openPersonalChat(userId, username, button) {
     const response = await fetch(`/chat/chat_with/${userId}/`, {
@@ -294,123 +212,52 @@ function updateHeaderStatusIndicator(userId) {
       },
     })
 
-
     const data = await response.json()
     if (!data.success) return
 
-  if (button) {
-  button.dataset.chatId = data.chat_id
-  button.dataset.chatUser = userId
+    if (button) {
+      button.dataset.chatId = data.chat_id
+      button.dataset.chatUser = userId
+      clearUnread(data.chat_id)
+    }
 
-  clearUnread(data.chat_id)
-}
-
-renderChat(data)
-updateHeaderStatusIndicator(userId)
-updateCurrentHeaderFromList()
-    if (elements.chatHeaderStatusIndicator) {
-  elements.chatHeaderStatusIndicator.removeAttribute('data-user-id')
-  elements.chatHeaderStatusIndicator.classList.remove('online', 'offline')
-}
+    renderChat(data)
     updateCurrentHeaderFromList()
   }
 
-
   async function openGroupChat(chatId) {
-  const response = await fetch(`/chat/chat_open/${chatId}/`)
-  const data = await response.json()
+    const response = await fetch(`/chat/chat_open/${chatId}/`)
+    const data = await response.json()
 
-  if (!data.success) return
+    if (!data.success) return
 
-  clearUnread(data.chat_id)
-  renderChat(data)
+    renderChat(data)
 
-  if (elements.chatHeaderStatusIndicator) {
-    elements.chatHeaderStatusIndicator.style.display = 'none'
-    elements.chatHeaderStatusIndicator.removeAttribute('data-user-id')
-    elements.chatHeaderStatusIndicator.classList.remove('online', 'offline')
-  }
-
-  if (elements.chatStatus) {
-    const participants = Number(data.participants_count) || 0
-    const online = Number(data.online_count) || 0
-
-    elements.chatStatus.textContent = `${participants} учасники, ${online} в мережі`
-  }
-}
-
-function updateUnreadBadge(chatId, count) {
-  if (window.UnreadMessages?.updateChatButtonUnread) {
-    window.UnreadMessages.updateChatButtonUnread(chatId, count)
-  }
-}
-
-  function applyUnreadCounts(counts) {
-  if (window.UnreadMessages?.applyUnreadCounts) {
-    window.UnreadMessages.applyUnreadCounts(counts)
-    return
-  }
-
-  Object.entries(counts || {}).forEach(([chatId, count]) => {
-    updateUnreadBadge(chatId, Number(count) || 0)
-  })
-
-
-  let groupTotal = 0
-
-  Object.entries(counts || {}).forEach(([chatId, count]) => {
-    const button = document.querySelector(`.chat-user-button[data-chat-id="${chatId}"]`)
-
-    if (button?.dataset.chatType === 'group') {
-      groupTotal += Number(count) || 0
+    if (elements.chatStatus) {
+      elements.chatStatus.textContent = data.chat_status || ''
     }
-  })
-
-  const groupBadge = document.querySelector('.group-unread-badge')
-  const groupBadgeText = groupBadge?.querySelector('span')
-
-  if (groupBadge && groupBadgeText) {
-    groupBadgeText.textContent = groupTotal > 0 ? groupTotal : ''
-    groupBadge.style.display = groupTotal > 0 ? 'flex' : 'none'
   }
-}
 
- function bindChatButtons() {
-  document.querySelectorAll('.chat-user-button').forEach(button => {
-    button.addEventListener('click', () => {
-      if (button.dataset.chatType === 'group') {
-        openGroupChat(button.dataset.chatId)
-        return
-      }
+  function bindChatButtons() {
+    document.querySelectorAll('.chat-user-button').forEach(button => {
+      button.addEventListener('click', () => {
+        if (button.dataset.chatUser) {
+          openPersonalChat(button.dataset.chatUser, button.dataset.chatUsername, button)
+          return
+        }
 
-      if (button.dataset.chatUser) {
-        openPersonalChat(button.dataset.chatUser, button.dataset.chatUsername, button)
-        return
-      }
-
-      if (button.dataset.chatId) {
-        openGroupChat(button.dataset.chatId)
-      }
-    })
-  })
-}
-
-  function formatInitialSidebarTimes() {
-      document.querySelectorAll('.message-time[data-time]').forEach(element => {
-    const formattedTime = window.formatTime?.(element.dataset.time)
-
-    if (formattedTime) {
-      element.textContent = formattedTime
-    }
+        if (button.dataset.chatId) {
+          openGroupChat(button.dataset.chatId)
+        }
       })
-    }
+    })
+  }
 
   function init() {
-      cacheElements()
-      setChatActive(false)
-      bindChatButtons()
-      formatInitialSidebarTimes()
-    }
+    cacheElements()
+    setChatActive(false)
+    bindChatButtons()
+  }
 
   window.ChatUI = {
     state,

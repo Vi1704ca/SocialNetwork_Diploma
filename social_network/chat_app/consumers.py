@@ -1,7 +1,7 @@
 import json
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.utils import timezone
+
 from .forms import MessageForm
 from .models import Chat, Message
 
@@ -81,8 +81,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "message_id": created_message.id,
                 "sender_id": user.id,
                 "sender_name": getattr(user, "nickname", user.username),
-                "created_at": created_message.created_at.isoformat(),
-                "created_time": created_message.created_at.strftime("%H:%M"),
+                "created_at": created_message.created_at.strftime("%H:%M"),
                 "client_id": client_id,
                 "is_read": is_read,
             }
@@ -91,17 +90,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.broadcast_unread_counts()
 
     async def chat_message(self, event):
+        
         await self.send(text_data=json.dumps(event))
 
     async def unread_update(self, event):
+        """Отправляет клиенту обновление счётчика непрочитанных по всем чатам."""
         await self.send(text_data=json.dumps({
             "type": "unread_update",
-            "unread_counts": event.get("unread_counts", {}),
-            "chat_id": event.get("chat_id"),
-            "last_message": event.get("last_message"),
+            "unread_counts": event["unread_counts"],
         }))
 
     async def read_receipt(self, event):
+        """Сообщает отправителю, что его сообщение прочитано."""
         await self.send(text_data=json.dumps({
             "type": "read_receipt",
             "message_id": event["message_id"],
@@ -143,27 +143,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return message.read_by.exclude(pk=message.sender.pk).exists()
 
     async def broadcast_unread_counts(self):
+        
         user_ids = await self.get_chat_users()
-        last_message = await self.get_last_message_preview()
-
         for uid in user_ids:
             from django.contrib.auth import get_user_model
             User = get_user_model()
-
             try:
                 u = await database_sync_to_async(User.objects.get)(pk=uid)
             except User.DoesNotExist:
                 continue
-
             counts = await self.get_unread_counts(u)
-
             await self.channel_layer.group_send(
                 f"presence_user_{uid}",
                 {
                     "type": "unread_update",
                     "unread_counts": counts,
-                    "chat_id": str(self.chat_id),
-                    "last_message": last_message,
                 }
             )
     async def broadcast_read_receipts(self, message_ids):
@@ -176,25 +170,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-    async def read_receipt(self, event):
-        await self.send(text_data=json.dumps({
-            "type": "read_receipt",
-            "message_id": event["message_id"],
-        }))
-    @database_sync_to_async
-    def get_last_message_preview(self):
-        message = Message.objects.filter(chat_id=self.chat_id).order_by("-created_at").first()
-    
-        if not message:
-            return None
-    
-        return {
-            "chat_id": str(self.chat_id),
-            "sender_id": str(message.sender_id),
-            "message": message.text or "Фото",
-            "created_at": message.created_at.isoformat(),
-        }
-    
 
 class PresenceConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -268,9 +243,7 @@ class PresenceConsumer(AsyncWebsocketConsumer):
     async def unread_update(self, event):
         await self.send(text_data=json.dumps({
             "type": "unread_update",
-            "unread_counts": event.get("unread_counts", {}),
-            "chat_id": event.get("chat_id"),
-            "last_message": event.get("last_message"),
+            "unread_counts": event["unread_counts"],
         }))
 
     @database_sync_to_async
