@@ -111,10 +111,14 @@ class ChatOpenView(LoginRequiredMixin, View):
                 "images": [img.image.url for img in m.images.all()]
             })
 
-<<<<<<< HEAD
         participants = list(chat.users.all())
         participants_count = len(participants)
+        
+        # Переменная global_online_users должна быть импортирована или определена, 
+        # если вы ее используете. Пока оставим заглушку, чтобы не падало, если её нет.
+        global_online_users = getattr(request, 'global_online_users', []) 
         online_count = sum(1 for user in participants if user.id in global_online_users)
+        
         members = [
             {
                 "id": user.id,
@@ -122,23 +126,18 @@ class ChatOpenView(LoginRequiredMixin, View):
             }
             for user in participants
         ]
-=======
->>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
+
         return JsonResponse({
             "success": True,
             "chat_id": chat.id,
             "chat_name": chat.name or "Груповий чат",
             "messages": messages,
-<<<<<<< HEAD
             "is_group": chat.is_group,
             "is_admin": chat.admin_id == request.user.id,
             "participants_count": participants_count,
             "online_count": online_count,
             "members": members,
             "avatar_url": chat.avatar.url if chat.avatar else "",
-=======
-            "is_group": chat.is_group
->>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
         })
 
 
@@ -257,7 +256,8 @@ class MessageImagesUploadView(LoginRequiredMixin, View):
             "message": text,
             "images": image_urls
         })
-    
+
+
 class LeaveGroupChatView(LoginRequiredMixin, View):
     login_url = reverse_lazy("auth")
 
@@ -309,6 +309,7 @@ class DeleteGroupChatView(LoginRequiredMixin, View):
         chat.delete()
 
         return JsonResponse({"success": True})
+
 
 class EditGroupChatView(LoginRequiredMixin, View):
     login_url = reverse_lazy("auth")
@@ -406,7 +407,8 @@ class EditGroupChatView(LoginRequiredMixin, View):
             "participants_count": chat.users.count(),
             "members": members,
         })
-    
+
+
 class GroupMediaImagesView(LoginRequiredMixin, View):
     login_url = reverse_lazy("auth")
 
@@ -437,7 +439,8 @@ class GroupMediaImagesView(LoginRequiredMixin, View):
                 for image in images
             ]
         })
-    
+
+
 class GroupAvatarImagesView(LoginRequiredMixin, View):
     login_url = reverse_lazy("auth")
 
