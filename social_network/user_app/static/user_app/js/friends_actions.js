@@ -1,6 +1,5 @@
-const _csrfMeta = document.querySelector("meta[name='csrf-token']");
-const csrfToken = _csrfMeta ? _csrfMeta.content : null;
-const friendsMainList = document.querySelector("#friendsMainList") || document.querySelector(".friends-main");
+const csrfMeta = document.querySelector("meta[name='csrf-token']");
+const csrfToken = csrfMeta ? csrfMeta.content : null;
 
 const modalFriends = document.getElementById("modalFriends");
 const modalCancelBtn = document.getElementById("modalCancelBtn");
@@ -10,6 +9,7 @@ let pendingActionButton = null;
 
 function openConfirmModal(actionButton) {
   pendingActionButton = actionButton;
+
   if (modalFriends) {
     modalFriends.classList.remove("hidden");
     modalFriends.classList.add("confirm-action");
@@ -18,6 +18,7 @@ function openConfirmModal(actionButton) {
 
 function closeConfirmModal() {
   pendingActionButton = null;
+
   if (modalFriends) {
     modalFriends.classList.add("hidden");
     modalFriends.classList.remove("confirm-action");
@@ -25,13 +26,21 @@ function closeConfirmModal() {
 }
 
 if (modalCancelBtn) {
-  modalCancelBtn.addEventListener("click", closeConfirmModal);
+  modalCancelBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    closeConfirmModal();
+  });
 }
 
 if (modalConfirmBtn) {
-  modalConfirmBtn.addEventListener("click", async () => {
+  modalConfirmBtn.addEventListener("click", async function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
     const actionButton = pendingActionButton;
     closeConfirmModal();
+
     if (actionButton) {
       await handleFriendAction(actionButton);
     }
@@ -39,29 +48,44 @@ if (modalConfirmBtn) {
 }
 
 async function handleFriendAction(actionButton) {
-  const headers = {};
-  if (csrfToken) headers["X-CSRFToken"] = csrfToken;
+  if (!actionButton.dataset.url) {
+    return;
+  }
+
+  actionButton.disabled = true;
+
+  const headers = {
+    "X-Requested-With": "XMLHttpRequest",
+  };
+
+  if (csrfToken) {
+    headers["X-CSRFToken"] = csrfToken;
+  }
 
   let response;
+
   try {
     response = await fetch(actionButton.dataset.url, {
       method: "POST",
-      headers,
+      headers: headers,
     });
-  } catch (err) {
-    console.error("Мережева помилка", err);
+  } catch (error) {
+    console.error("Мережева помилка", error);
+    actionButton.disabled = false;
     return;
   }
 
   if (!response.ok) {
     console.error("Помилка сервера", response.status);
+    actionButton.disabled = false;
     return;
   }
 
   const data = await response.json();
 
   if (data.success === false) {
-    console.error(data.message);
+    console.error(data.message || "Дія не виконана");
+    actionButton.disabled = false;
     return;
   }
 
@@ -70,48 +94,45 @@ async function handleFriendAction(actionButton) {
     return;
   }
 
-  if (data.friend_html) {
-    addFriendToMain(data.friend_html);
-  }
-
-  if (data.label) {
-    actionButton.textContent = data.label;
-  }
-
   if (data.remove) {
     if (actionButton.dataset.actionContext === "profile") {
       window.location.reload();
-    } else {
-      const removedCard = actionButton.closest(".card-user, .person-card");
-      if (removedCard) removedCard.remove();
+      return;
+    }
+
+    const removedCard = actionButton.closest(".card-user, .person-card");
+    if (removedCard) {
+      removedCard.remove();
     }
   }
-}
 
-function addFriendToMain(friendHtml) {
-  if (!friendsMainList) return;
-  const friendsCount = friendsMainList.querySelectorAll(".card-user, .person-card").length;
-  if (friendsCount < 6) {
-    friendsMainList.insertAdjacentHTML('beforeend', friendHtml);
-    connectFriendActionButtons(friendsMainList);
-  }
+  actionButton.disabled = false;
 }
 
 function connectFriendActionButtons(parent = document) {
-  const actionButtons = parent.querySelectorAll(".action-button");
-  actionButtons.forEach((actionButton) => {
-    if (!actionButton.dataset.eventConnected) {
-      actionButton.dataset.eventConnected = true;
-      actionButton.addEventListener("click", async () => {
-        if (actionButton.dataset.confirm === "true") {
-          openConfirmModal(actionButton);
-        } else {
-          await handleFriendAction(actionButton);
-        }
-      });
+  const actionButtons = parent.querySelectorAll(".action-button[data-url]");
+
+  actionButtons.forEach(function (actionButton) {
+    if (actionButton.dataset.eventConnected === "true") {
+      return;
     }
+
+    actionButton.dataset.eventConnected = "true";
+
+    actionButton.addEventListener("click", async function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (actionButton.dataset.confirm === "true") {
+        openConfirmModal(actionButton);
+        return;
+      }
+
+      await handleFriendAction(actionButton);
+    });
   });
 }
 
 connectFriendActionButtons();
+
 window.connectFriendActionButtons = connectFriendActionButtons;

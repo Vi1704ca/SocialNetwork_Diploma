@@ -80,3 +80,21 @@
 .avatar-container {
     position: relative;
 }
+
+.sidebar-friend-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.sidebar-friend-actions .action-button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sidebar-friend-actions .action-button img {
+    display: block;
+}

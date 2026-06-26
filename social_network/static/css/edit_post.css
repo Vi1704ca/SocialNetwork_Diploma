@@ -3,6 +3,7 @@
 }
 
 .panel-edit{
+    position: fixed;
     display: flex;
     width: 21.43rem;
     height: 8.75rem;
@@ -11,6 +12,7 @@
     border-radius: 10px;
     background-color: #E9E5EE;
     flex-direction: column;
+    z-index: 2000;
 }
 
 .action-post{

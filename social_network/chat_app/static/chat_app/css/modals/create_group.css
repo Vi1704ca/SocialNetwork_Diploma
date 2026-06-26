@@ -203,3 +203,240 @@
   height: 20px !important;
   display: block;
 }
+
+.new-group-modal.hidden {
+    display: none !important;
+}
+
+.new-group-modal .members {
+    display: flex;
+    flex-direction: column;
+    width: 25.125rem;
+    height: 12rem;
+    gap: 1rem;
+    overflow: hidden;
+}
+
+.new-group-modal .members-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.new-group-modal .members-header p {
+    margin: 0;
+    color: #070A1C;
+    font-size: 1rem;
+    font-family: var(--fontMedium);
+}
+
+.new-group-modal .add-member-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
+.new-group-modal .add-member-button.hidden {
+    display: none !important;
+}
+
+.new-group-modal .add-member-button img {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: block;
+}
+
+#group-members-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
+#group-members-preview .member-row-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#group-members-preview .member-info-block {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#group-members-preview .member-avatar-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    border-radius: 50%;
+    background-color: #543C52;
+    color: #FFFFFF;
+    font-family: var(--fontMedium);
+    font-size: 1rem;
+}
+
+#group-members-preview .member-fullname {
+    margin: 0;
+    color: #070A1C;
+    font-size: 1rem;
+    font-family: var(--fontMedium);
+}
+
+#group-members-preview .remove-member {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
+#group-members-preview .remove-member img {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: block;
+}
+
+.new-group-modal[data-mode="edit"] .members {
+    height: 13.75rem;
+    border: 1px solid #CDCED2;
+    border-radius: 0.625rem;
+    padding: 1rem;
+}
+
+.group-avatar-gallery.hidden {
+  display: none !important;
+}
+
+.group-avatar-gallery {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.group-avatar-gallery-content {
+  width: 420px;
+  max-height: 520px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.group-avatar-gallery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.group-avatar-gallery-header button {
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.group-avatar-gallery-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.avatar-gallery-item {
+  border: none;
+  background: transparent;
+  padding: 0;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.avatar-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.group-avatar-gallery.hidden {
+    display: none !important;
+}
+
+.group-avatar-gallery {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.group-avatar-gallery-content {
+    width: 26rem;
+    max-height: 32rem;
+    background: #ffffff;
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+}
+
+.group-avatar-gallery-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.group-avatar-gallery-header p {
+    margin: 0;
+    font-size: 1.25rem;
+    font-family: var(--fontMedium);
+    color: #070A1C;
+}
+
+.group-avatar-gallery-header button {
+    border: none;
+    background: transparent;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.group-avatar-gallery-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    max-height: 25rem;
+    overflow-y: auto;
+}
+
+.avatar-gallery-item {
+    border: none;
+    background: transparent;
+    padding: 0;
+    aspect-ratio: 1;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.avatar-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

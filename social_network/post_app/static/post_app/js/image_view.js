@@ -1,34 +1,42 @@
-const input = document.getElementById('images-input');
-const preview = document.getElementById('image-preview');
-const btn = document.getElementById('choose-images');
+const input = document.getElementById("images-input");
+const preview = document.getElementById("image-preview");
+const btn = document.getElementById("choose-images");
 
-btn.addEventListener('click', () => {
-    input.click();
-});
+let selectedFiles = [];
 
-input.addEventListener('change', () => {
-    preview.innerHTML = ""; 
+function syncInputFiles() {
+    const dataTransfer = new DataTransfer();
 
-    const files = Array.from(input.files);
+    selectedFiles.forEach(file => {
+        dataTransfer.items.add(file);
+    });
 
-    files.forEach((file, index) => {
+    input.files = dataTransfer.files;
+}
+
+function renderPreview() {
+    preview.innerHTML = "";
+
+    selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
 
-        reader.onload = (e) => {
-            const container = document.createElement('div');
-            container.classList.add('preview-container');
+        reader.onload = event => {
+            const container = document.createElement("div");
+            container.className = "preview-container";
 
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.classList.add('preview-img');
+            const img = document.createElement("img");
+            img.src = event.target.result;
+            img.className = "preview-img";
 
-            const removeBtn = document.createElement('button');
-            removeBtn.type = 'button';
-            removeBtn.classList.add('remove-image-btn');
-            removeBtn.innerHTML = `<img src="/static/icons/modal/del_image.svg" alt="Удалить">`;
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "remove-image-btn";
+            removeBtn.innerHTML = `<img src="/static/icons/modal/del_image.svg" alt="Видалити">`;
 
-            removeBtn.addEventListener('click', () => {
-                container.remove();
+            removeBtn.addEventListener("click", () => {
+                selectedFiles.splice(index, 1);
+                syncInputFiles();
+                renderPreview();
             });
 
             container.appendChild(img);
@@ -38,4 +46,16 @@ input.addEventListener('change', () => {
 
         reader.readAsDataURL(file);
     });
-});
+}
+
+if (btn && input && preview) {
+    btn.addEventListener("click", () => {
+        input.click();
+    });
+
+    input.addEventListener("change", () => {
+        selectedFiles = Array.from(input.files);
+        syncInputFiles();
+        renderPreview();
+    });
+}

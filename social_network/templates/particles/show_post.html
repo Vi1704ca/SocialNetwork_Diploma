@@ -1,29 +1,43 @@
 {% load static %}
 {% for post in posts %}
-<article class="post">
+<article class="post" data-post-id="{{ post.id }}">
     <div class="post-header">
         <div class="user-details-post">
             <div class="avatar-post">
-                <img src="{% static 'icons/avatar.jpg' %}" alt="{{ user.nickname }}">
+                <img src="{% static 'icons/avatar.jpg' %}" alt="{{ post.author.nickname }}">
                 <div class="status-indicator" data-user-id="{{ post.author.id }}"></div>
             </div>
             <p>{{ post.author.nickname|default:post.author.username }}</p>
         </div>
+
         <div class="post-item">
             <div class="post-signature">
                 <img src="{% static 'icons/Interaction Icon.png' %}" alt="">
             </div>
-            <div class="post-actions">
+
+            <div class="post-actions" data-open-post-panel data-post-id="{{ post.id }}">
                 <img src="{% static 'icons/modal/action_post.svg' %}" alt="">
             </div>
+            {% if post.author_id == request.user.id %}
+                <div class="post-menu" hidden>
+                    <button type="button" data-edit-post data-post-id="{{ post.id }}">
+                        <img src="{% static 'icons/modal/edit.svg' %}" alt="">
+                        Редагувати допис
+                    </button>
+                    <button type="button" data-delete-post data-post-id="{{ post.id }}">
+                        <img src="{% static 'icons/modal/trash.svg' %}" alt="">
+                        Видалити публікацію
+                    </button>
+                </div>
+            {% endif %}
         </div>
     </div>
-    <div class="post-main">
 
+    <div class="post-main">
         <h2>{{ post.title }}</h2>
 
-        {% if post.topic and post.content%}
-            <p>{{ post.topic }} <br> {{ post.content }}</p>
+        {% if post.topic or post.content %}
+            <p>{{ post.topic }}{% if post.topic and post.content %}<br>{% endif %}{{ post.content }}</p>
         {% endif %}
 
         {% if post.tags.all %}
@@ -36,7 +50,6 @@
 
         {% if post.links.all %}
             <ul>
-                
                 {% for link in post.links.all %}
                     <li>
                         <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.url }}</a>
@@ -44,18 +57,34 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <div>
-            {% if post.images.all %}
-            <div>
+
+        {% if post.images.all %}
+            <div class="post-images">
                 {% for image in post.images.all %}
-                    <p>
-                        <a href="{{ image.original_image.url }}" target="_blank" rel="noopener noreferrer">
-                            <img src="{{ image.compressed_image.url }}" alt="{{ post.title }}">
-                        </a>
-                    </p>
-                {% endfor %} 
+                    <a class="post-image-link" href="{{ image.original_image.url }}" target="_blank" rel="noopener noreferrer">
+                        <img class="post-image" src="{{ image.compressed_image.url }}" alt="{{ post.title }}">
+                    </a>
+                {% endfor %}
             </div>
-            {% endif %}
+        {% endif %}
+    </div>
+        <div class="reactions">
+        <button type="button" class="reaction-btn" data-reaction-type="heart" data-post-id="{{ post.id }}">
+            <img src="{% static 'icons/modal/heart.svg' %}" alt="">
+            <span data-heart-count>{{ post.heart_count }}</span>
+            <span>Вподобань</span>
+        </button>
+
+        <button type="button" class="reaction-btn" data-reaction-type="like" data-post-id="{{ post.id }}">
+            <img src="{% static 'icons/modal/thumb_up.svg' %}" alt="">
+            <span data-like-count>{{ post.like_count }}</span>
+            <span>Вподобань</span>
+        </button>
+
+        <div class="views-count" data-post-view-counter="{{ post.id }}">
+            <img src="{% static 'icons/modal/eye.svg' %}" alt="">
+            <span data-views-count>{{ post.views_count }}</span>
+            <span>Переглядів</span>
         </div>
     </div>
 </article>

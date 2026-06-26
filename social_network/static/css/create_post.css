@@ -187,21 +187,7 @@ label {
     color: rgba(7, 10, 28, 1);
 }
 
-.create-post-forms .tags div{
-    display: flex;
-    width: 5.6875rem;
-    height: 1.75em;
-    border-radius: 6px;
-    gap: 2.6rem;
-    padding: 0.625rem;
-    background-color: #E9E5EE;
-    color: #543C52;
-    font-size: 0.875rem;
-    font-weight: 400;
-    font-family: var(--fontRegular);
-    align-items: center;
-    justify-content: center;
-}
+
 .create-post-forms .tags div input[type="checkbox"]{
     display: none;
 }
@@ -270,4 +256,35 @@ label {
     display: flex;
     gap: 8px;
     align-items: center;
+}
+
+.create-post-forms .tags label:has(input:checked),
+.create-post-forms .tags label.selected,
+.create-post-forms .tag-choice.selected {
+    background: #543c52;
+    color: #ffffff;
+}
+
+.create-post-forms .tags input[type="checkbox"] {
+    display: none !important;
+}
+
+.create-post-forms .tags label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.75rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 0.375rem;
+    background: #eee9f0;
+    color: #543c52;
+    font-size: 0.85rem;
+    font-family: var(--fontRegular);
+    cursor: pointer;
+}
+
+.create-post-forms .tags label:has(input:checked),
+.create-post-forms .tags label.selected {
+    background: #543c52;
+    color: #ffffff;
 }

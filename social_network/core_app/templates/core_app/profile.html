@@ -1,45 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} {{ profile_user.nickname }} {% endblock %}
+
+{% block title %}
+    {{ profile_user.nickname|default:profile_user.email }}
+{% endblock %}
+
 {% block meta %}
     <meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
+
 {% block content %}
-<div class="profile-page">
-    <div class="profile-header">
-        <img class="avatar-img" src="{% static 'icons/avatar.jpg' %}" alt="">
-        <div>
-            <h2>{{ profile_user.nickname }}</h2>
-            <h4>@{{ profile_user.username }}</h4>
+    <div class="profile-page">
+        <div class="profile-posts" id="profilePostsList">
+            {% include "particles/show_post.html" with posts=posts %}
         </div>
-        {% if not is_own_profile %}
-            <div class="buttons">
-                {% if friendship_status == "accepted" %}
-                    <button class="action-button" data-confirm="true" data-action-context="profile"
-                            data-url="{% url 'friend_action' profile_user.id 'delete' %}">
-                        Видалити з друзів
-                    </button>
-                {% elif friendship_status == "pending" %}
-                    <button class="action-button" disabled>Очікування</button>
-                {% else %}
-                    <button class="action-button" data-action-context="profile"
-                            data-url="{% url 'friend_action' profile_user.id 'add' %}">
-                        Додати в друзі
-                    </button>
-                {% endif %}
-            </div>
-        {% endif %}
-    </div>
 
-    <div class="profile-posts" id="profilePostsList">
-        {% include "post_app/particles/show_post.html" with posts=posts %}
-    </div>
-    <div id="profilePostsSentinel"></div>
+        <div id="profilePostsSentinel"></div>
 
-    {% include "user_app/particles/friends/modal/confirm_action.html" %}
-</div>
+        {% include "user_app/particles/friends/modal/confirm_action.html" %}
+    </div>
 {% endblock %}
-{% block script %}
+
+{% block scripts %}
+    {{ block.super }}
     <script src="{% static 'user_app/js/friends_actions.js' %}"></script>
     <script src="{% static 'core_app/js/profile_posts_scroll.js' %}"></script>
 {% endblock %}

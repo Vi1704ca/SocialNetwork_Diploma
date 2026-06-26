@@ -2,16 +2,25 @@
 {% load static %}
 
 {% block meta %}
-    <meta name = "csrf-token" content = "{{csrf_token}}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
 
 {% block links %}
     <link rel="stylesheet" href="{% static 'css/core.css' %}">
     <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_post.css' %}">
 {% endblock %}
+
+{% block modal-create-post %}
+    {% include 'particles/create_post.html' %}
+    {% include 'particles/create_tag.html' %}
+    {% include 'particles/edit_post.html' %}
+{% endblock modal-create-post %}
+
 
 {% block sidebar %}
     {{ block.super }}
+
     <div class="requests">
         <div class="inquiry">
             <span>
@@ -20,49 +29,50 @@
             </span>
             <a href="{% url 'friends' %}">Дивитись всі</a>
         </div>
+
         <div class="followers" onclick="location.href='{% url 'friends' %}'">
             <div class="info-followers">
-                
-               {% for follower in followers %}
+                {% for follower in followers %}
                     <div class="follower">
                         <div>
                             <img class="avatar-follower" src="{% static 'icon/Follower2.jpg' %}" alt="">
                         </div>
                         <span class="info-follower">
-                            <p>{{ follower.nickname }}</p>
+                            <p>{{ follower.nickname|default:follower.email }}</p>
                             <p class="follower-followers">Запит на дружбу</p>
                         </span>
                     </div>
                 {% empty %}
                     <p>Немає запитів на дружбу</p>
                 {% endfor %}
-                    </div>
+            </div>
         </div>
     </div>
+
     <div class="message-people" onclick="location.href='{% url 'chat' %}'">
         <div class="messages">
-                <span>
-                    <img src="{% static 'icons/logo/chat.svg' %}" alt="">
-                    <p>Повідомлення</p>
-                </span>
-                <p>Дивитись всі</p>
+            <span>
+                <img src="{% static 'icons/logo/chat.svg' %}" alt="">
+                <p>Повідомлення</p>
+            </span>
+            <p>Дивитись всі</p>
         </div>
-            
+
         <div class="message-user">
             <div class="user-message">
-                {% for chat in personal_chats %} 
-                    {% for person in chat.users.all %} 
+                {% for chat in personal_chats %}
+                    {% for person in chat.users.all %}
                         {% if person.id != request.user.id %}
-                            <div class = "message">
-                                <div class="avatar-friends"> 
+                            <div class="message">
+                                <div class="avatar-friends">
                                     <img class="avatar-friends" src="{% static 'icon/user1.jpg' %}" alt="">
                                 </div>
                                 <span class="message-friends">
-                                    <span class = "nickname-message">
+                                    <span class="nickname-message">
                                         <p>{{ person.nickname|default:person.email }}</p>
-                                        <p>{{ chat.last_message_text|truncatechars:28 }}</p> 
+                                        <p>{{ chat.last_message_text|truncatechars:28 }}</p>
                                     </span>
-                                    <p class = "time">{{ chat.last_message_time }}</p>
+                                    <p class="time">{{ chat.last_message_time }}</p>
                                 </span>
                             </div>
                         {% endif %}
@@ -78,15 +88,20 @@
         {% include 'core_app/modal_details.html' %}
     {% endif %}
 
- 
     {% include 'particles/content_post.html' %}
 {% endblock %}
 
-
-{% block script %}
+{% block scripts %}
+    {{ block.super }}
+    <script type="module" src="{% static 'post_app/js/post_reactions.js' %}"></script>
+    <script src="{% static 'post_app/js/postList.js' %}"></script>
     <script src="{% static 'js/modal_details.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src = "{% static 'post_app/js/imageView.js' %}"></script> 
-    <script src = "{% static 'post_app/js/imageSize.js' %}"></script>
-    <script src = "{% static 'post_app/js/postList.js' %}"></script>
+    <script src="{% static 'post_app/js/imageView.js' %}"></script>
+    <script src="{% static 'post_app/js/imageSize.js' %}"></script>
+    <script src="{% static 'post_app/js/postList.js' %}"></script>
+    <script type="module" src="{% static 'js/renderErrors.js' %}"></script>
+    <script type="module" src="{% static 'post_app/js/create_post.js' %}"></script>
+    <script type="module" src="{% static 'post_app/js/create_tag.js' %}"></script>
+    <script type="module" src="{% static 'post_app/js/edit_post.js' %}"></script>
 {% endblock %}

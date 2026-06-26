@@ -72,8 +72,15 @@ class PostForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        links_raw = cleaned_data.get('links', '')
-        self.links_list = [l.strip() for l in links_raw.split('\n') if l.strip()]
+        links_from_inputs = self.links_list or []
+        if isinstance(links_from_inputs, str):
+            links_from_inputs = [links_from_inputs]
+        
+        self.links_list = [
+            link.strip()
+            for link in links_from_inputs
+            if link and link.strip()
+        ]
 
         url_field = forms.URLField()
         image_field = forms.ImageField()
@@ -148,6 +155,14 @@ class PostForm(forms.ModelForm):
         return ContentFile(buffer.getvalue(), name= compressed_name)
     
 class TagForm(forms.ModelForm):
+    def clean_name(self):
+        name = self.cleaned_data.get('name', '').strip()
+        name = name.lstrip('#').strip()
+    
+        if not name:
+            raise forms.ValidationError("Назва хештега не може бути порожньою.")
+    
+        return f'#{name}'
     class Meta:
         model = Tag
         fields = ("name",)
@@ -158,9 +173,3 @@ class TagForm(forms.ModelForm):
                 "id": "tag-name-input"
             }),
         }
-
-    def clean_name(self):
-        name = self.cleaned_data.get('name')
-        if name and not name.startswith('#'):
-            name = f'#{name}'
-        return name

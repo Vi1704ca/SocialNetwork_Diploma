@@ -4,6 +4,9 @@
     <div class="chat-view">
         <div class="chat-header hidden">
             <div class="chat-header-userinfo">
+                <div class="back-arrow">
+                    <img src="{% static 'chat_app/icons/back-arrow.svg' %}">
+                </div>
                 <div class="header-icon-wrapper">
                     <div id="chat-avatar" class="chat-avatar-wrapper">NG</div>
                     <div id="chat-header-status-indicator" class="status-indicator"></div>
@@ -13,7 +16,7 @@
                     <p id="chat-status" class="chat-status">3 учасники, 1 в мережі</p>
                 </div>
             </div>
-            <button type="button" id = "open-panel" class="btn-more-actions">
+            <button type="button" id="open-panel" class="btn-more-actions hidden">
                 <img src="{% static 'icons/modal/action_post.svg' %}" alt="">
             </button>
         </div>

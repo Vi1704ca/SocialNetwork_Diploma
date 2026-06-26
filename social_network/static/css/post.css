@@ -1,14 +1,14 @@
-.make-publication{
-    width:100%;
-    height:7.5rem;
-    display:flex;
+.make-publication {
+    width: 100%;
+    height: 7.5rem;
+    display: flex;
     position: relative;
 }
 
-.make-publication button{
-    background-color:transparent;
-    border:none;
-    cursor:pointer;
+.make-publication button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .buttons {
@@ -23,25 +23,27 @@
     flex-wrap: wrap;
 }
 
-.smile-btn{
-    width:2.5rem;
-    height:2.5rem;
-}
-.smile-img{
-    height:100%;
-    width:100%;
-}
-.start-making-publication-btn{
-    width:11.875rem;
-    height:2.5rem;
-
-}
-.start-making-publication-img{
-    width:100%;
-    height:100%;
+.smile-btn {
+    width: 2.5rem;
+    height: 2.5rem;
 }
 
-textarea{
+.smile-img {
+    width: 100%;
+    height: 100%;
+}
+
+.start-making-publication-btn {
+    width: 11.875rem;
+    height: 2.5rem;
+}
+
+.start-making-publication-img {
+    width: 100%;
+    height: 100%;
+}
+
+textarea {
     width: 100%;
     height: 7.87rem;
     border-radius: 0.625rem;
@@ -56,117 +58,46 @@ textarea{
     resize: none;
 }
 
-textarea:focus, input:focus{
+textarea:focus,
+input:focus {
     outline: none;
     border: 1px solid rgba(205, 206, 210, 1);
 }
 
-.post{
-    width:100%;
-    background:#fff;
-    border:1px solid #CDCED2;
-    border-radius:10px;
-    height:fit-content;
+.post {
+    width: 100%;
+    height: fit-content;
+    background: #ffffff;
+    border: 1px solid #CDCED2;
+    border-radius: 0.625rem;
+    overflow: hidden;
 }
 
-.post-main{
-    padding: 1rem 1.25rem;
+.post-header {
+    position: relative;
+    width: 100%;
+    height: 5.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #CDCED2;
+    padding: 0 1.25rem;
 }
 
-.post h2{
-    font-size:1rem;
-    color:#070A1C;
-    font-weight:500;
-    font-family:var(--fontMedium)
-}
-.post p{
-    font-size:1rem;
-    font-weight:400;
-    color:#070A1C;
-    font-family:var(--fontRegular)
-}
-.post li a{
-    font-size:1rem;
-    font-weight:400;
-    color: #543C52;
-    font-family:var(--fontRegular);
-    text-decoration:underline;
+.user-details-post {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 22.8rem;
 }
 
-.post-main div div {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    flex-direction: row !important;
-    gap: 10px !important;
-    justify-content: flex-start !important;
-    align-items: flex-start !important;
-}
-
-.post-main div div p {
-    display: contents !important;
-}
-
-/* Avoid applying padding to all descendants (breaks image layout) */
-
-
-.post-main div{
-    display:flex;
-    justify-content: center;
-    padding: 0;
-}
-
-/* Ensure reactions are left-aligned despite the general .post-main div centering rule */
-.post-main > .reactions{
-    justify-content: flex-start !important;
-    margin-left: -1.25rem;
-    padding-left: 1.25rem;
-}
-
-.post-main div div a {
-    display: block !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-.post-main div div a img {
-    max-width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-    object-fit: cover !important;
-    border-radius: 1rem !important;
-    padding: 0 !important;
-}
-
-/* максимум три картинки  */
-.post-main div div a.img-fix {
-    width: 17.72rem !important;
-    height: 20.4rem !important;
-    flex: 0 0 17.72rem !important;
-}
-
-/* більше трьох */
-.post-main div div a.img-big {
-    flex: 0 0 calc((100% - 10px) / 2) !important;
-    height: 20.43rem !important;
-}
-
-/* 3 в рядочок (маленькі) */
-.post-main div div a.img-small {
-    flex: 0 0 calc((100% - 20px) / 3) !important;
-    height: 25rem !important;
-}
-
-
-
-.post-header{
-    position: relative; /* ОБЯЗАТЕЛЬНО */
-    width:100%;
-    height:5.5rem;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid #CDCED2;
-    padding:0 1.25rem;
+.post-header .avatar-post {
+    position: relative;
+    width: 2.8rem;
+    height: 2.8rem;
+    min-width: 2.8rem;
+    border-radius: 50%;
+    background-color: #ffffff;
 }
 
 .post-header .avatar-post img {
@@ -176,66 +107,13 @@ textarea:focus, input:focus{
     object-fit: cover;
 }
 
-.post-signature img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-.post-actions img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-.post-header .avatar-post {
-    position: relative;
-    background-color: #ffffff;
-    width: 2.8rem;
-    height: 2.8rem;
-    border-radius: 50%;
-}
-
 .post-header .user-details-post p {
-    margin:0;
-    font-size:14px;
-    font-weight:500;
-    line-height:1;
-    color:#070A1C;
-    font-family:var(--fontMedium);
-}
-
-.user-details-post{
-    align-items:center;
-    display:flex;
-    gap:0.75rem;
-    width:22.8rem;
-}
-
-.post-signature {
-    display: flex;
-    width: 220px;
-    height: 49px;
-}
-
-
-.post-actions {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.post-item {
-    display: flex;
-    gap: 0.625rem;
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    color: #070A1C;
+    font-family: var(--fontMedium);
 }
 
 .user-details-post .status-indicator {
@@ -253,46 +131,272 @@ textarea:focus, input:focus{
     border-radius: 50%;
 }
 
-.reactions{
-    display:flex;
-    flex-direction:row;
-    width:100%;
-    gap:1rem;
-    justify-content:flex-start;
-    align-items:center;
+.post-item {
+    display: flex;
+    gap: 0.625rem;
+}
+
+.post-signature {
+    display: flex;
+    width: 220px;
+    height: 49px;
+}
+
+.post-signature img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.post-actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.post-actions img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.post-main {
+    padding: 1rem 1.25rem;
+}
+
+.post h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: #070A1C;
+    font-weight: 500;
+    font-family: var(--fontMedium);
+}
+
+.post p {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #070A1C;
+    font-family: var(--fontRegular);
+}
+
+.post ul {
+    margin: 0 0 0.75rem;
+    padding-left: 1.25rem;
+}
+
+.post li a {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #543C52;
+    font-family: var(--fontRegular);
+    text-decoration: underline;
+}
+
+/* Картинки поста */
+.post-images {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.post-image-link {
+    display: block;
+    height: 20.4375rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    background-color: #F3F4F6;
+}
+
+.post-image-link.img-big {
+    width: 27.09375rem;
+}
+
+.post-image-link.img-small {
+    width: 17.729166rem;
+}
+
+.post-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Если JS ещё не поставил классы */
+.post-images .post-image-link:not(.img-big):not(.img-small) {
+    width: 27.09375rem;
+}
+
+.reactions {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: center;
     padding-top: 0.5rem;
-    /* Shift reactions to the left edge of the post (align with post border) */
     margin-left: -1.25rem;
     padding-left: 1.25rem;
 }
 
-.reactions button img{
-    background-color:transparent;
-    width:20px;
-    height:20px;
-    object-fit: contain;
-    margin-right:8px;
-}
-
-.reactions button { 
-    display:flex;
-    flex-direction:row;
-    background-color:transparent;
-    border:none;
+.reactions button {
+    display: flex;
+    flex-direction: row;
     width: fit-content;
-    height:auto;
-    align-items:center;
-    justify-content:flex-start;
+    height: auto;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: transparent;
+    border: none;
     color: #6B7280;
     font-family: var(--fontRegular);
     font-size: 0.95rem;
     cursor: pointer;
 }
 
-.reaction-text{ line-height:1; }
+.reactions button img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin-right: 8px;
+    background-color: transparent;
+}
 
-.modal{
-    display:flex;
-    flex-direction:row;
+.reaction-text {
+    line-height: 1;
+}
+
+.modal {
+    display: flex;
+    flex-direction: row;
     justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+    .post-header {
+        height: auto;
+        min-height: 5rem;
+        padding: 0.875rem 1rem;
+    }
+
+    .post-main {
+        padding: 0.875rem 1rem;
+    }
+
+    .post-signature {
+        width: 150px;
+        height: 34px;
+    }
+
+    .post-images {
+        gap: 0.35rem;
+    }
+
+    .post-image-link,
+    .post-image-link.img-big,
+    .post-image-link.img-small,
+    .post-images .post-image-link:not(.img-big):not(.img-small) {
+        width: 100%;
+        height: 16rem;
+    }
+}
+
+.post-item {
+    position: relative;
+}
+
+.post-actions {
+    border: none;
+    background: transparent;
+}
+
+.post-menu {
+    position: absolute;
+    top: 2.25rem;
+    right: 0;
+    width: 16rem;
+    padding: 0.75rem;
+    border: 1px solid #cdced2;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(7, 10, 28, 0.16);
+    z-index: 20;
+}
+
+.post-menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    background: transparent;
+    color: #070a1c;
+    font-family: var(--fontRegular);
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: left;
+}
+
+.post-menu button:hover {
+    background: #eee9f0;
+    border-radius: 0.5rem;
+}
+
+.post-menu img {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.reactions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid #CDCED2;
+}
+
+.reaction-btn,
+.views-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    background: transparent;
+    color: #070A1C;
+    font-family: var(--fontRegular);
+    font-size: 0.95rem;
+}
+
+.reaction-btn {
+    cursor: pointer;
+}
+
+.reaction-btn img,
+.views-count img {
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
+}
+
+.reaction-btn.active {
+    color: #543C52;
+    font-family: var(--fontMedium);
 }

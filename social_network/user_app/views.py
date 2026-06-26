@@ -70,32 +70,45 @@ class LoginView(View):
     
 class ConfirmEmailView(View):
     def post(self, request, *args, **kwargs):
-        form = EmailVerificationForm(request.POST) 
+        form = EmailVerificationForm(request.POST)
         email = request.POST.get("email")
-        user = get_object_or_404(User, email = email)
+        user = get_object_or_404(User, email=email)
+
         if user.email_confirmed:
             return JsonResponse({
                 "success": False,
                 "message": "E-mail вже підтверджено."
-            }, status = 400 )
+            }, status=400)
+
         if form.is_valid():
             entered_code = form.cleaned_data["code"]
+
             if user.confirmed_code == entered_code:
                 user.email_confirmed = True
                 user.is_active = True
                 user.confirmed_code = None
                 user.save()
+
                 login(request, user)
+
+                # ВАЖНО: ставим флаг после login(), чтобы он не потерялся
+                request.session["show_details_modal"] = True
+
                 return JsonResponse({
-                "success": True,
-                "message": "E-mail підтверджено.",
-                "redirect": "/"
-            }) 
-            else:
-                return JsonResponse({
+                    "success": True,
+                    "message": "E-mail підтверджено.",
+                    "redirect": "/"
+                })
+
+            return JsonResponse({
                 "success": False,
-                "message": "Код пітвердження невірний."
-            }, status = 400 ) 
+                "message": "Код підтвердження невірний."
+            }, status=400)
+
+        return JsonResponse({
+            "success": False,
+            "errors": form.errors.get_json_data()
+        }, status=400)
 
 class LogoutView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):

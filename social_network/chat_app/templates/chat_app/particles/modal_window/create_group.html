@@ -1,21 +1,26 @@
 {% load static %}
 
-<form action="{% url 'chat_group_create' %}" method="post" class="new-group-modal hidden" id="new-group-modal" enctype="multipart/form-data">
+<form action="{% url 'chat_group_create' %}" method="post" class="new-group-modal hidden" id="new-group-modal" enctype="multipart/form-data" data-mode="create">
     {% csrf_token %}
+
     <div class="header">
         <div class="close-modal" id="close-new-group-modal">
             <img src="{% static 'chat_app/icons/close_modal.svg' %}" alt="">
-        </div> 
+        </div>
     </div>
-    <h2>Нова група</h2>
+
+    <h2 id="group-modal-title">Нова група</h2>
+
     <div class="input-block">
         <label for="make_a_name">Назва</label>
         <input placeholder="Введіть назву" type="text" name="name" class="make-a-name" id="make_a_name" required>
     </div>
+
     <div class="indicator-and-buttons">
         <div class="indicator" id="group-photo-preview">
             <span class="group-photo-initials">NG</span>
         </div>
+
         <div class="photo-buttons">
             <button class="add-photo" type="button" id="group-add-photo-btn">
                 <div>
@@ -23,21 +28,29 @@
                 </div>
                 Додайте фото
             </button>
+
             <button class="pick-photo" type="button" id="group-pick-photo-btn">
                 <div>
-                    <img src="{% static 'icons/modal/media.svg' %}" alt=""> 
+                    <img src="{% static 'icons/modal/media.svg' %}" alt="">
                 </div>
                 Оберіть фото
             </button>
         </div>
     </div>
+
     <input type="file" accept="image/*" name="avatar" id="group-photo-input" class="hidden-file-input">
-        <div class="members">
-        <p>Учасники</p>
-        <div id="group-members-preview">
-           
+    <input type="hidden" name="selected_avatar_image_id" id="selected-avatar-image-id">
+
+    <div class="members">
+        <div class="members-header">
+            <p>Учасники</p>
+
+            <button type="button" id="edit-add-members-btn" class="add-member-button hidden">
+                <img src="{% static 'chat_app/icons/plus.svg' %}" alt="">
+            </button>
         </div>
-     
+
+        <div id="group-members-preview"></div>
     </div>
 
     <input type="hidden" name="members" id="group-members-input">
@@ -46,8 +59,20 @@
         <button type="button" class="back" id="group-modal-back">
             <img src="{% static 'chat_app/icons/back.svg' %}" alt="">
         </button>
-        <button type="submit" class="make-group"> 
-            <img src="{% static 'chat_app/icons/make-group.svg' %}" alt=""> 
+
+        <button type="submit" class="make-group" id="group-submit-button">
+            <img id="group-submit-icon" src="{% static 'chat_app/icons/make-group.svg' %}" alt="">
         </button>
     </div>
 </form>
+
+<div id="group-avatar-gallery" class="group-avatar-gallery hidden">
+    <div class="group-avatar-gallery-content">
+        <div class="group-avatar-gallery-header">
+            <p>Оберіть фото</p>
+            <button type="button" id="close-avatar-gallery">×</button>
+        </div>
+
+        <div id="group-avatar-gallery-list" class="group-avatar-gallery-list"></div>
+    </div>
+</div>

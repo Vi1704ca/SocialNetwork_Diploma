@@ -1,16 +1,28 @@
 {% load static %}
 <aside class="hidden" id="panel">
     <div class="header-panel">
-        <button id = "close-panel" style="cursor:pointer;">
+        <button id="close-panel" type="button" style="cursor:pointer;">
             <img src="{% static 'icons/modal/action_post.svg' %}" alt="">
         </button>
     </div>
+
     <div class="main-panel">
-        <button><img src="{% static 'icons/modal/media.svg' %}" alt="">Медіа</button>
-        <button><img src="{% static 'icons/modal/edit.svg' %}" alt="">Редагувати групу</button>
+        <button type="button" id="panel-media">
+            <img src="{% static 'icons/modal/media.svg' %}" alt="">Медіа
+        </button>
+
+        <button type="button" id="panel-edit-group" class="admin-only">
+            <img src="{% static 'icons/modal/edit.svg' %}" alt="">Редагувати групу
+        </button>
     </div>
+
     <div class="footer-panel">
-        <button><img src="{% static 'icons/modal/trash.svg' %}" alt="">Видалити чат</button>
-        <button><img src="{% static 'icons/modal/leave.svg' %}" alt="">Покинути групу</button>
+        <button type="button" id="panel-delete-group" class="admin-only">
+            <img src="{% static 'icons/modal/trash.svg' %}" alt="">Видалити чат
+        </button>
+
+        <button type="button" id="panel-leave-group" class="member-only">
+            <img src="{% static 'icons/modal/leave.svg' %}" alt="">Покинути групу
+        </button>
     </div>
 </aside>

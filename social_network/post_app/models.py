@@ -20,13 +20,25 @@ class Post(models.Model):
     
     def __str__(self):
         return f"{self.author.username}: {self.title}"
+    
+    @property
+    def heart_count(self):
+        return self.reactions.filter(reaction_type="heart").count()
+    
+    @property
+    def like_count(self):
+        return self.reactions.filter(reaction_type="like").count()
+    
+    @property
+    def views_count(self):
+        return self.views.count()
 # 
 class Tag(models.Model):
     ''''''
     name = models.CharField(max_length= 100, unique= True)
     
     def __str__(self):
-        return f"#{self.name}"
+        return f"{self.name}"
 #  
 class PostLinks(models.Model):
     ''''''
@@ -54,13 +66,41 @@ class PostImage(models.Model):
         return f"Image: {self.original_image}"
 # 
 class PostView(models.Model):
-    ''''''
     user = models.ForeignKey(
-        to= settings.AUTH_USER_MODEL,
-        on_delete= models.CASCADE
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
     )
     post = models.ForeignKey(
-        to= Post,
-        on_delete= models.CASCADE,
-        related_name= "views"
+        to=Post,
+        on_delete=models.CASCADE,
+        related_name="views"
     )
+
+    class Meta:
+        unique_together = ("user", "post")
+
+
+class PostReaction(models.Model):
+    REACTION_CHOICES = (
+        ("heart", "Heart"),
+        ("like", "Like"),
+    )
+
+    user = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="post_reactions"
+    )
+    post = models.ForeignKey(
+        to=Post,
+        on_delete=models.CASCADE,
+        related_name="reactions"
+    )
+    reaction_type = models.CharField(
+        max_length=20,
+        choices=REACTION_CHOICES
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "post", "reaction_type")

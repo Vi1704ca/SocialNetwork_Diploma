@@ -1,4 +1,5 @@
 {% load static %}
+
 {% for person in users %}
     <div class="card-user">
         <span>
@@ -7,31 +8,65 @@
             </div>
             <div class="status-indicator" data-user-id="{{ person.id }}"></div>
         </span>
-        <h3>{{ person.nickname }}</h3>
-        <h4>@{{ person.username }}</h4>
+
+        <h3>{{ person.nickname|default:person.email }}</h3>
+        <h4>@{{ person.username|default:person.id }}</h4>
+
         <div class="buttons">
             {% if section == "requests" %}
-                <button class="action-button" data-url="{% url 'friend_action' person.id 'accept' %}">
-                    <img src="{% static 'user_app/icon/friends/confirm_btn.svg' %}" alt="">
+                <button
+                    type="button"
+                    class="action-button"
+                    data-url="{% url 'friend_action' person.id 'accept' %}"
+                    data-profile-url="/profile/{{ person.id }}/"
+                >
+                    <img src="{% static 'user_app/icon/friends/confirm_btn.svg' %}" alt="Підтвердити">
                 </button>
-                <button class="action-button" data-confirm="true" data-url="{% url 'friend_action' person.id 'delete' %}">
-                    <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="">
+
+                <button
+                    type="button"
+                    class="action-button"
+                    data-confirm="true"
+                    data-url="{% url 'friend_action' person.id 'delete' %}"
+                >
+                    <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="Видалити">
                 </button>
+
             {% elif section == "recommendations" %}
-                <button class="action-button" data-url="{% url 'friend_action' person.id 'add' %}">
-                    <img src="{% static 'user_app/icon/friends/add_btn.svg' %}" alt="">
+                <button
+                    type="button"
+                    class="action-button"
+                    data-url="{% url 'friend_action' person.id 'add' %}"
+                    data-profile-url="/profile/{{ person.id }}/"
+                >
+                    <img src="{% static 'user_app/icon/friends/add_btn.svg' %}" alt="Додати">
                 </button>
-                <button class="action-button" data-confirm="true" data-url="{% url 'friend_action' person.id 'dismiss' %}">
-                    <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="">
+
+                <button
+                    type="button"
+                    class="action-button"
+                    data-confirm="true"
+                    data-url="{% url 'friend_action' person.id 'dismiss' %}"
+                >
+                    <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="Відхилити">
                 </button>
+
             {% else %}
-                <button class="action-button" data-url="{% url 'friend_action' person.id 'add' %}">
-                    <img src="{% static 'user_app/icon/friends/message_btn.svg' %}" alt="">
-                </button>
-                <button class="action-button" data-confirm="true" data-url="{% url 'friend_action' person.id 'delete' %}">
-                    <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="">
+                <a class="action-button" href="/profile/{{ person.id }}/">
+                    <img src="{% static 'user_app/icon/friends/message_btn.svg' %}" alt="Профіль">
+                </a>
+
+                <button
+                    type="button"
+                    class="action-button"
+                    data-confirm="true"
+                    data-url="{% url 'friend_action' person.id 'delete' %}"
+                >
+                    <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="Видалити">
                 </button>
             {% endif %}
         </div>
     </div>
+{% empty %}
+    <p class="empty-friends">Немає користувачів</p>
 {% endfor %}

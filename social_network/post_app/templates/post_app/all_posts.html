@@ -15,6 +15,7 @@
 {% block modal-create-post %}
     {% include 'particles/create_post.html' %}
     {% include 'particles/create_tag.html' %}
+    {% include 'particles/edit_post.html' %}
 {% endblock modal-create-post %}
 
 
@@ -23,6 +24,9 @@
 {% endblock content %}
 
 {% block scripts %}
+    {{ block.super }}
+    <script type="module" src="{% static 'post_app/js/post_reactions.js' %}"></script>
+    <script type="module" src="{% static 'post_app/js/edit_post.js' %}"></script>
     <script type="module" src="{% static 'js/renderErrors.js' %}" ></script>
     <script type="module" src="{% static 'post_app/js/postList.js' %} "></script>
     <script type="module" src="{% static 'post_app/js/create_post.js' %} "></script>

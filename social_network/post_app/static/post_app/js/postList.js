@@ -1,31 +1,51 @@
-let currentPage = 1
-let isLoading = false
-// 
-const loaderLine = document.getElementById('postLoaderLine')
-const postList = document.querySelector('.post-list')
-// 
-const observer = new IntersectionObserver(async (entries) => {
-    if (entries[0].isIntersecting && isLoading == false){
-        isLoading = true
-        currentPage ++
-        let path = window.location.pathname
-        console.log(path)
+(function () {
+    const loaderLine = document.getElementById("postLoaderLine");
+    const postList = document.querySelector(".post-list");
 
-        const response = await fetch(`${path}?page=${currentPage}`, {
-            headers:{
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        const data = await response.json()
-        if(data.success){
-            const html = data.html
-            loaderLine.insertAdjacentHTML('beforebegin', html)
-            // loaderLine.insertAdjacentHTML('beforebegin', 'html')
-        }else{
-            observer.disconnect()
-        }
-        isLoading = false
+    if (!loaderLine || !postList) {
+        return;
     }
-}, {rootMargin: '200px'})
-// 
-observer.observe(loaderLine)
+
+    if (window.postListInitialized) {
+        return;
+    }
+
+    window.postListInitialized = true;
+
+    let currentPage = 1;
+    let isLoading = false;
+
+    const observer = new IntersectionObserver(async (entries) => {
+        if (!entries[0].isIntersecting || isLoading) {
+            return;
+        }
+
+        isLoading = true;
+        currentPage += 1;
+
+        try {
+            const path = window.location.pathname;
+
+            const response = await fetch(`${path}?page=${currentPage}`, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                loaderLine.insertAdjacentHTML("beforebegin", data.html);
+            } else {
+                observer.disconnect();
+            }
+        } catch (error) {
+            console.error("Post list loading error:", error);
+            observer.disconnect();
+        }
+
+        isLoading = false;
+    }, { rootMargin: "200px" });
+
+    observer.observe(loaderLine);
+})();

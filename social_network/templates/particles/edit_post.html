@@ -1,5 +1,6 @@
 {% load static %}
-<aside id = "modalPanel" class="hidden">
+
+<aside id="modalPanel" class="hidden">
     <div class="header">
         <div class="action-post">
             <img src="{% static 'icons/modal/action_post.svg' %}" alt="">
@@ -7,16 +8,15 @@
     </div>
     <div class="main-post">
         <div class="edit-post">
-            <button><img src="{% static 'icons/modal/edit.svg' %}" alt="">Редагувати допис</button>
+            <button type="button" data-panel-edit-post>
+                <img src="{% static 'icons/modal/edit.svg' %}" alt="">Редагувати допис
+            </button>
         </div>
         <hr>
         <div class="trash-post">
-            <button><img src="{% static 'icons/modal/trash.svg' %}" alt="">Видалити публікацію</button>
+            <button type="button" data-panel-delete-post>
+                <img src="{% static 'icons/modal/trash.svg' %}" alt="">Видалити публікацію
+            </button>
         </div>
     </div>
-
 </aside>
-
-{% block scripts %}
-    <script type="module" src="{% static 'post_app/js/edit_post.js' %} "></script>
-{% endblock scripts %}

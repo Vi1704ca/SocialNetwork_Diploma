@@ -6,7 +6,7 @@
         </div>
     </div>
 
-    <h2>Нова група</h2>
+    <h2 id="select-members-title">Нова група</h2>
     <div class = "search">
         <img src="{% static 'chat_app/icons/search.svg' %}" alt="">
         <input type="text" placeholder="Пошук" id="group-search-input">
@@ -39,6 +39,9 @@
     </section>
 
     <div class = "action-buttons">
+        <p id="select-members-error" class="select-members-error hidden">
+            Оберіть щонайменше 2 користувачів
+        </p>
         <div>
             <button type="button" class = "cancel" id="cancel-select-members">
                  <img src="{% static 'chat_app/icons/cancel.svg' %}" alt="">

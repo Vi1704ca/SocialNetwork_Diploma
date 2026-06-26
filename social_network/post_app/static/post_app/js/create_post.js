@@ -3,7 +3,14 @@ import { renderErrors } from "../../../../static/js/renderErrors.js"
 document.getElementById('show-modal-create').addEventListener(
     'click',
     function (){
-        document.querySelector(".modal-create-post").style.display = 'flex'
+        const quickPostContent = document.getElementById("quick-post-content");
+        const modalContentInput = document.getElementById("id_content");
+
+        if (quickPostContent && modalContentInput) {
+            modalContentInput.value = quickPostContent.value;
+        }
+
+        document.querySelector(".modal-create-post").style.display = 'flex';
     }
 )
 document.querySelector('.close-modal').addEventListener(
@@ -109,10 +116,43 @@ document.getElementById('post-create-form').addEventListener(
             return data
         })
         .then(data => {
-            if (data.redirect_url){
-                window.location.href = data.redirect_url
+    if (data.post_html) {
+        const oldPost = document.querySelector(`.post[data-post-id="${data.post_id}"]`);
+
+        if (oldPost) {
+            oldPost.outerHTML = data.post_html;
+        } else {
+            const postList = document.querySelector(".post-list");
+            const loaderLine = document.getElementById("postLoaderLine");
+
+            if (postList && loaderLine) {
+                loaderLine.insertAdjacentHTML("beforebegin", data.post_html);
+            } else if (postList) {
+                postList.insertAdjacentHTML("afterbegin", data.post_html);
             }
-        })
+        }
+    }
+
+    form.reset();
+    form.dataset.mode = "";
+    form.dataset.postId = "";
+    form.action = "/post/create/";
+
+    const heading = form.querySelector("h2");
+    if (heading) {
+        heading.textContent = "Створення публікації";
+    }
+
+    const quickPostContent = document.getElementById("quick-post-content");
+    if (quickPostContent) {
+        quickPostContent.value = "";
+    }
+
+    const modal = document.querySelector(".modal-create-post");
+    if (modal) {
+        modal.style.display = "none";
+    }
+})
         .catch(data => {
             if(data.errors){
                 renderErrors("create-errors", data.errors)

@@ -37,36 +37,121 @@
     </header>
     <main>
         <div class = "sidebar">
-            {% block sidebar %}
-                <div class="sidebar-profile" onclick="location.href='{% url 'post' %}'">
+        {% block sidebar %}
+            {% with display_user=sidebar_user|default:request.user %}
+                <div class="sidebar-profile" onclick="location.href='/profile/{{ display_user.id }}/'">
                     <div class="user-info">
-                        <div class="avatar-container"> 
+                        <div class="avatar-container">
                             <div class="avatar-image">
-                                <img src="{% static 'icons/avatar.jpg' %}" alt=""> 
+                                <img src="{% static 'icons/avatar.jpg' %}" alt="">
                             </div>
-                            <div class="status-indicator" data-user-id="{{ request.user.id }}"></div>
+                            <div class="status-indicator" data-user-id="{{ display_user.id }}"></div>
                         </div>
-                        <div class = "user-details">
-                            <h2 class="user-name">{{ user.nickname|default:"Lina Li" }}</h2>
-                            <p class="user-handle">@{{ user.username|default:"thelili" }}</p>
+                    
+                        <div class="user-details">
+                            <h2 class="user-name">{{ display_user.nickname|default:display_user.email }}</h2>
+                            <p class="user-handle">@{{ display_user.username|default:display_user.id }}</p>
                         </div>
                     </div>
+                
                     <div class="stats-section">
                         <div class="posts-stat">
-                            <h2>566</h2>
+                            <h2>{{ sidebar_posts_count|default:display_user.posts.count }}</h2>
                             <p>Дописи</p>
                         </div>
+                    
                         <div class="readers-stat">
-                            <h2>12.1K</h2>
-                            <p>Читачі</p>
+                            <h2>{{ sidebar_views_count|default:"0" }}</h2>
+                            <p>Перегляди</p>
                         </div>
-                        <div class = "friends-stat" onclick="location.href='{% url 'friends' %}'">
-                            <h2>222</h2>
+                    
+                        <div class="friends-stat" onclick="event.stopPropagation(); location.href='{% url 'friends' %}'">
+                            <h2>{{ sidebar_friends_count|default:"0" }}</h2>
                             <p>Друзі</p>
                         </div>
                     </div>
+                
+                    {% if show_friend_actions %}
+    <div class="sidebar-friend-actions" onclick="event.stopPropagation();">
+        {% if friendship_status == "accepted" %}
+            <a class="action-button" href="{% url 'chat' %}">
+                <img src="{% static 'user_app/icon/friends/message_btn.svg' %}" alt="Повідомлення">
+            </a>
+
+            <button
+                type="button"
+                class="action-button"
+                data-confirm="true"
+                data-action-context="profile"
+                data-url="{% url 'friend_action' profile_user.id 'delete' %}"
+            >
+                <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="Видалити">
+            </button>
+
+        {% elif friendship_status == "pending" and friendship_is_incoming %}
+            <button
+                type="button"
+                class="action-button"
+                data-action-context="profile"
+                data-url="{% url 'friend_action' profile_user.id 'accept' %}"
+            >
+                <img src="{% static 'user_app/icon/friends/confirm_btn.svg' %}" alt="Підтвердити">
+            </button>
+
+            <button
+                type="button"
+                class="action-button"
+                data-confirm="true"
+                data-action-context="profile"
+                data-url="{% url 'friend_action' profile_user.id 'delete' %}"
+            >
+                <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="Видалити">
+            </button>
+
+        {% elif friendship_status == "pending" %}
+            <button
+                type="button"
+                class="action-button"
+                disabled
+            >
+                <img src="{% static 'user_app/icon/friends/confirm_btn.svg' %}" alt="Очікування">
+            </button>
+
+            <button
+                type="button"
+                class="action-button"
+                data-confirm="true"
+                data-action-context="profile"
+                data-url="{% url 'friend_action' profile_user.id 'delete' %}"
+            >
+                <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="Видалити">
+            </button>
+
+        {% else %}
+            <button
+                type="button"
+                class="action-button"
+                data-action-context="profile"
+                data-url="{% url 'friend_action' profile_user.id 'add' %}"
+            >
+                <img src="{% static 'user_app/icon/friends/add_btn.svg' %}" alt="Додати">
+            </button>
+
+            <button
+                type="button"
+                class="action-button"
+                data-confirm="true"
+                data-action-context="profile"
+                data-url="{% url 'friend_action' profile_user.id 'dismiss' %}"
+            >
+                <img src="{% static 'user_app/icon/friends/delete_btn.svg' %}" alt="Видалити">
+            </button>
+        {% endif %}
+    </div>
+{% endif %}
                 </div>
-            {% endblock %}
+            {% endwith %}
+        {% endblock %}
         </div>
         <div class="content">
             {% block content %} {% endblock %}

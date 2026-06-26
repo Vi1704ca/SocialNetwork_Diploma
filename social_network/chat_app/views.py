@@ -12,6 +12,7 @@ from .consumers import global_online_users
 
 from .models import Chat, Message, MessageImage
 from user_app.utils.friend_queries import get_user_by_section
+from django.core.files.base import ContentFile
 
 User = get_user_model()
 
@@ -117,15 +118,24 @@ class ChatOpenView(LoginRequiredMixin, View):
         participants = list(chat.users.all())
         participants_count = len(participants)
         online_count = sum(1 for user in participants if user.id in global_online_users)
-
+        members = [
+            {
+                "id": user.id,
+                "name": getattr(user, "nickname", None) or user.username,
+            }
+            for user in participants
+        ]
         return JsonResponse({
             "success": True,
             "chat_id": chat.id,
             "chat_name": chat.name or "Груповий чат",
             "messages": messages,
             "is_group": chat.is_group,
+            "is_admin": chat.admin_id == request.user.id,
             "participants_count": participants_count,
             "online_count": online_count,
+            "members": members,
+            "avatar_url": chat.avatar.url if chat.avatar else "",
         })
 
 
@@ -135,8 +145,18 @@ class CreateGroupChatView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         member_ids = request.POST.get("members", "")
         name = request.POST.get("name", "").strip()
+        selected_avatar_image_id = request.POST.get("selected_avatar_image_id", "").strip()
+
+        selected_member_ids = [
+            member_id.strip()
+            for member_id in member_ids.split(",")
+            if member_id.strip()
+        ]
 
         if not name:
+            return redirect("chat")
+
+        if len(selected_member_ids) < 2:
             return redirect("chat")
 
         chat = Chat.objects.create(
@@ -147,17 +167,38 @@ class CreateGroupChatView(LoginRequiredMixin, View):
 
         chat.users.add(request.user)
 
-        if member_ids:
-            for member_id in member_ids.split(","):
-                try:
-                    user = User.objects.get(id=int(member_id))
-                    chat.users.add(user)
-                except (ValueError, User.DoesNotExist):
-                    continue
+        for member_id in selected_member_ids:
+            try:
+                user = User.objects.get(id=int(member_id))
+                chat.users.add(user)
+            except (ValueError, User.DoesNotExist):
+                continue
 
         if "avatar" in request.FILES:
             chat.avatar = request.FILES["avatar"]
             chat.save()
+        elif selected_avatar_image_id.startswith("group_avatar_"):
+            avatar_chat_id = selected_avatar_image_id.replace("group_avatar_", "")
+
+            selected_chat = Chat.objects.filter(
+                id=avatar_chat_id,
+                users=request.user,
+                is_group=True,
+                avatar__isnull=False
+            ).exclude(avatar="").first()
+
+            if selected_chat and selected_chat.avatar:
+                selected_chat.avatar.open("rb")
+                file_name = selected_chat.avatar.name.split("/")[-1]
+
+                chat.avatar.save(
+                    file_name,
+                    ContentFile(selected_chat.avatar.read()),
+                    save=False
+                )
+
+                selected_chat.avatar.close()
+                chat.save()
 
         return redirect("chat")
 
@@ -212,4 +253,206 @@ class MessageImagesUploadView(LoginRequiredMixin, View):
             "success": True,
             "message": text,
             "images": image_urls
+        })
+    
+class LeaveGroupChatView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("auth")
+
+    def post(self, request, chat_id, *args, **kwargs):
+        chat = Chat.objects.filter(
+            id=chat_id,
+            users=request.user,
+            is_group=True
+        ).first()
+
+        if not chat:
+            return JsonResponse({
+                "success": False,
+                "error": "chat_not_found"
+            }, status=404)
+
+        if chat.admin_id == request.user.id:
+            return JsonResponse({
+                "success": False,
+                "error": "admin_cannot_leave"
+            }, status=403)
+
+        chat.users.remove(request.user)
+
+        return JsonResponse({"success": True})
+
+
+class DeleteGroupChatView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("auth")
+
+    def post(self, request, chat_id, *args, **kwargs):
+        chat = Chat.objects.filter(
+            id=chat_id,
+            is_group=True
+        ).first()
+
+        if not chat:
+            return JsonResponse({
+                "success": False,
+                "error": "chat_not_found"
+            }, status=404)
+
+        if chat.admin_id != request.user.id:
+            return JsonResponse({
+                "success": False,
+                "error": "only_admin_can_delete"
+            }, status=403)
+
+        chat.delete()
+
+        return JsonResponse({"success": True})
+
+class EditGroupChatView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("auth")
+
+    def post(self, request, chat_id, *args, **kwargs):
+        chat = Chat.objects.filter(id=chat_id, is_group=True).first()
+
+        if not chat:
+            return JsonResponse({"success": False, "error": "chat_not_found"}, status=404)
+
+        if chat.admin_id != request.user.id:
+            return JsonResponse({"success": False, "error": "only_admin_can_edit"}, status=403)
+
+        name = request.POST.get("name", "").strip()
+        member_ids = request.POST.get("members", "")
+        selected_avatar_image_id = request.POST.get("selected_avatar_image_id", "").strip()
+
+        selected_member_ids = [
+            member_id.strip()
+            for member_id in member_ids.split(",")
+            if member_id.strip()
+        ]
+
+        if not name:
+            return JsonResponse({"success": False, "error": "empty_name"}, status=400)
+
+        if len(selected_member_ids) < 2:
+            return JsonResponse({"success": False, "error": "not_enough_members"}, status=400)
+
+        chat.name = name
+
+        if "avatar" in request.FILES:
+            chat.avatar = request.FILES["avatar"]
+
+        elif selected_avatar_image_id.startswith("group_avatar_"):
+            avatar_chat_id = selected_avatar_image_id.replace("group_avatar_", "")
+
+            selected_chat = Chat.objects.filter(
+                id=avatar_chat_id,
+                users=request.user,
+                is_group=True,
+                avatar__isnull=False
+            ).exclude(avatar="").first()
+
+            if selected_chat and selected_chat.avatar:
+                selected_chat.avatar.open("rb")
+                file_name = selected_chat.avatar.name.split("/")[-1]
+
+                chat.avatar.save(
+                    file_name,
+                    ContentFile(selected_chat.avatar.read()),
+                    save=False
+                )
+
+                selected_chat.avatar.close()
+
+        elif selected_avatar_image_id:
+            selected_image = MessageImage.objects.filter(
+                id=selected_avatar_image_id,
+                message__chat=chat
+            ).first()
+
+            if selected_image:
+                selected_image.image.open("rb")
+                file_name = selected_image.image.name.split("/")[-1]
+
+                chat.avatar.save(
+                    file_name,
+                    ContentFile(selected_image.image.read()),
+                    save=False
+                )
+
+                selected_image.image.close()
+
+        chat.save()
+
+        users = User.objects.filter(id__in=selected_member_ids)
+        chat.users.set([request.user, *users])
+
+        members = [
+            {
+                "id": user.id,
+                "name": getattr(user, "nickname", None) or user.username,
+            }
+            for user in chat.users.all()
+        ]
+
+        return JsonResponse({
+            "success": True,
+            "chat_id": chat.id,
+            "chat_name": chat.name,
+            "is_group": True,
+            "is_admin": chat.admin_id == request.user.id,
+            "avatar_url": chat.avatar.url if chat.avatar else "",
+            "participants_count": chat.users.count(),
+            "members": members,
+        })
+    
+class GroupMediaImagesView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("auth")
+
+    def get(self, request, chat_id, *args, **kwargs):
+        chat = Chat.objects.filter(
+            id=chat_id,
+            users=request.user,
+            is_group=True
+        ).first()
+
+        if not chat:
+            return JsonResponse({
+                "success": False,
+                "error": "chat_not_found"
+            }, status=404)
+
+        images = MessageImage.objects.filter(
+            message__chat=chat
+        ).order_by("-id")
+
+        return JsonResponse({
+            "success": True,
+            "images": [
+                {
+                    "id": image.id,
+                    "url": image.image.url,
+                }
+                for image in images
+            ]
+        })
+    
+class GroupAvatarImagesView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("auth")
+
+    def get(self, request, *args, **kwargs):
+        chats = Chat.objects.filter(
+            users=request.user,
+            is_group=True,
+            avatar__isnull=False
+        ).exclude(avatar="").order_by("-id")
+
+        return JsonResponse({
+            "success": True,
+            "images": [
+                {
+                    "id": f"group_avatar_{chat.id}",
+                    "url": chat.avatar.url,
+                }
+                for chat in chats
+                if chat.avatar
+            ]
         })
