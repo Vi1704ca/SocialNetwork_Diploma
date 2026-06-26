@@ -19,11 +19,15 @@
     elements.chatTitle = document.getElementById('chat-title')
     elements.chatStatus = document.getElementById('chat-status')
     elements.chatAvatar = document.getElementById('chat-avatar')
+<<<<<<< HEAD
     elements.chatHeaderStatusIndicator = document.getElementById('chat-header-status-indicator')
+=======
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
     elements.chatWindow = document.getElementById('chat-window')
     elements.chatHeader = document.querySelector('.chat-header')
     elements.chatForm = document.getElementById('chat-message-form')
     elements.chatInput = document.getElementById('chat-input')
+<<<<<<< HEAD
     elements.backArrow = document.querySelector('.back-arrow')
     elements.openPanelButton = document.getElementById('open-panel')
 
@@ -31,6 +35,8 @@
     elements.panelEditGroup = document.getElementById('panel-edit-group')
     elements.panelDeleteGroup = document.getElementById('panel-delete-group')
     elements.panelLeaveGroup = document.getElementById('panel-leave-group')
+=======
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
   }
 
   function setChatActive(active) {
@@ -122,9 +128,13 @@
     if (elements.chatWindow) {
       elements.chatWindow.classList.remove('placeholder-active')
       elements.chatWindow.innerHTML = ''
+<<<<<<< HEAD
 
       window.renderMessages(elements.chatWindow, data.messages || [], state.currentUserId)
 
+=======
+      window.renderMessages(elements.chatWindow, data.messages || [], state.currentUserId)
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
       scrollToBottom()
     }
 
@@ -134,10 +144,15 @@
 
   function scrollToBottom() {
     if (!elements.chatWindow) return
+<<<<<<< HEAD
 
     const scroll = () => {
       elements.chatWindow.scrollTop = elements.chatWindow.scrollHeight
     }
+=======
+    elements.chatWindow.scrollTop = elements.chatWindow.scrollHeight
+  }
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
 
     requestAnimationFrame(scroll)
     setTimeout(scroll, 100)
@@ -149,18 +164,27 @@
 
     const bubble = window.createMessageBubble(
       data.message || '',
+<<<<<<< HEAD
       Number(data.sender_id) === Number(state.currentUserId),
+=======
+      data.sender_id === state.currentUserId,
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
       data.created_at,
       data.sender_name,
       data.images || [],
       data.is_read || false,
+<<<<<<< HEAD
       data.message_id || data.id || null
+=======
+      data.message_id || null
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
     )
 
     elements.chatWindow.appendChild(bubble)
     scrollToBottom()
   }
 
+<<<<<<< HEAD
   function updateChatPreview(chatId, message, createdAt, senderId = null) {
     let button = document.querySelector(`.chat-user-button[data-chat-id="${chatId}"]`)
 
@@ -224,10 +248,65 @@
       }
 
       renderChatAvatar(state.currentGroupData)
+=======
+  function updateChatPreview(chatId, message, createdAt) {
+    const button = document.querySelector(`.chat-user-button[data-chat-id="${chatId}"]`)
+    if (!button) return
+
+    const messageElement = button.querySelector('.user-message')
+    const timeElement = button.querySelector('.message-time')
+
+    if (messageElement) {
+      messageElement.textContent = message || 'Фото'
+    }
+
+    if (timeElement) {
+      timeElement.textContent = createdAt || ''
+    }
+
+    button.dataset.lastMessageTime = Date.now()
+    sortChatsByLastMessage()
+  }
+
+  function updateUnreadBadge(chatId, count) {
+    const button = document.querySelector(`.chat-user-button[data-chat-id="${chatId}"]`)
+    if (!button) return
+
+    button.classList.toggle('has-unread', count > 0)
+
+    let badge = button.querySelector('.chat-unread-count')
+
+    if (!badge) {
+      badge = document.createElement('div')
+      badge.className = 'chat-unread-count'
+      button.querySelector('.avatar-wrapper')?.appendChild(badge)
+    }
+
+    badge.textContent = count > 0 ? count : ''
+    badge.style.display = count > 0 ? 'flex' : 'none'
+  }
+
+  function applyUnreadCounts(counts) {
+    Object.entries(counts || {}).forEach(([chatId, count]) => {
+      updateUnreadBadge(chatId, Number(count))
+    })
+
+    const total = Object.values(counts || {}).reduce((sum, count) => sum + Number(count), 0)
+    const badgeText = document.querySelector('.notification-badge span')
+    const badge = badgeText?.closest('.notification-badge')
+
+    if (badgeText) {
+      badgeText.textContent = total > 0 ? total : ''
+    }
+
+    if (badge) {
+      badge.style.display = total > 0 ? 'flex' : 'none'
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
     }
   }
 
   function clearUnread(chatId) {
+<<<<<<< HEAD
     if (window.UnreadMessages?.updateChatButtonUnread) {
       window.UnreadMessages.updateChatButtonUnread(chatId, 0)
     }
@@ -243,6 +322,9 @@
     if (window.UnreadMessages?.applyUnreadCounts) {
       window.UnreadMessages.applyUnreadCounts(counts)
     }
+=======
+    updateUnreadBadge(chatId, 0)
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
   }
 
   function sortChatsByLastMessage() {
@@ -285,6 +367,7 @@
 
     const currentButton = document.querySelector(`.chat-user-button[data-chat-id="${state.currentChatId}"]`)
     const userId = currentButton?.dataset.chatUser
+<<<<<<< HEAD
 
     if (!userId) {
       hideHeaderStatusIndicator()
@@ -292,11 +375,21 @@
     }
 
     updateHeaderStatusIndicator(userId)
+=======
+    if (!userId) return
+
+    const isOnline = document
+      .querySelector(`.status-indicator[data-user-id="${userId}"]`)
+      ?.classList.contains('online')
+
+    renderPersonalStatus(Boolean(isOnline))
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
   }
 
   function updateHeaderPresence(userId, isOnline) {
     const currentButton = document.querySelector(`.chat-user-button[data-chat-id="${state.currentChatId}"]`)
 
+<<<<<<< HEAD
     if (currentButton?.dataset.chatUser !== String(userId)) return
 
     renderPersonalStatus(isOnline)
@@ -342,6 +435,20 @@
     Object.entries(counts || {}).forEach(([chatId, count]) => {
       window.UnreadMessages?.updateChatButtonUnread?.(chatId, Number(count) || 0)
     })
+=======
+    if (currentButton?.dataset.chatUser === String(userId)) {
+      renderPersonalStatus(isOnline)
+    }
+  }
+
+  function renderPersonalStatus(isOnline) {
+    if (!elements.chatStatus) return
+
+    elements.chatStatus.innerHTML = `
+      <span class="chat-status-dot ${isOnline ? 'online' : ''}"></span>
+      <span>${isOnline ? 'В мережі' : 'Не в мережі'}</span>
+    `
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
   }
 
   async function openPersonalChat(userId, username, button) {
@@ -363,10 +470,14 @@
     }
 
     renderChat(data)
+<<<<<<< HEAD
     state.currentGroupData = null
     hideGroupPanelButton()
     closePanel()
     updateHeaderStatusIndicator(userId)
+=======
+    updateCurrentHeaderFromList()
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
   }
 
   async function openGroupChat(chatId) {
@@ -375,6 +486,7 @@
 
     if (!data.success) return
 
+<<<<<<< HEAD
     clearUnread(data.chat_id)
     renderChat(data)
 
@@ -474,12 +586,30 @@
           return
         }
 
+=======
+    renderChat(data)
+
+    if (elements.chatStatus) {
+      elements.chatStatus.textContent = data.chat_status || ''
+    }
+  }
+
+  function bindChatButtons() {
+    document.querySelectorAll('.chat-user-button').forEach(button => {
+      button.addEventListener('click', () => {
+        if (button.dataset.chatUser) {
+          openPersonalChat(button.dataset.chatUser, button.dataset.chatUsername, button)
+          return
+        }
+
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
         if (button.dataset.chatId) {
           openGroupChat(button.dataset.chatId)
         }
       })
     })
   }
+<<<<<<< HEAD
 
   function bindBackArrow() {
     elements.backArrow?.addEventListener('click', showDefaultChatScreen)
@@ -494,16 +624,22 @@
       }
     })
   }
+=======
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
 
   function init() {
     cacheElements()
     setChatActive(false)
+<<<<<<< HEAD
     hideGroupPanelButton()
     closePanel()
     bindChatButtons()
     bindBackArrow()
     bindPanelActions()
     formatInitialSidebarTimes()
+=======
+    bindChatButtons()
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
   }
 
   window.ChatUI = {

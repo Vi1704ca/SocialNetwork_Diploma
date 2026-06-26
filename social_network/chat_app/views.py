@@ -7,8 +7,6 @@ from django.contrib.auth import get_user_model
 from asgiref.sync import async_to_sync
 from django.utils import timezone
 from channels.layers import get_channel_layer
-from .models import Chat, Message, MessageImage
-from .consumers import global_online_users
 
 from .models import Chat, Message, MessageImage
 from user_app.utils.friend_queries import get_user_by_section
@@ -89,9 +87,7 @@ class ChatWithView(LoginRequiredMixin, View):
             "chat_id": chat.id,
             "chat_name": f"Чат з {other_user.nickname or other_user.username}",
             "messages": messages,
-            "is_group": chat.is_group,
-            "other_user_id": other_user.id,
-            "other_user_online": other_user.id in global_online_users,
+            "is_group": chat.is_group
         })
 
 
@@ -115,6 +111,7 @@ class ChatOpenView(LoginRequiredMixin, View):
                 "images": [img.image.url for img in m.images.all()]
             })
 
+<<<<<<< HEAD
         participants = list(chat.users.all())
         participants_count = len(participants)
         online_count = sum(1 for user in participants if user.id in global_online_users)
@@ -125,17 +122,23 @@ class ChatOpenView(LoginRequiredMixin, View):
             }
             for user in participants
         ]
+=======
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
         return JsonResponse({
             "success": True,
             "chat_id": chat.id,
             "chat_name": chat.name or "Груповий чат",
             "messages": messages,
+<<<<<<< HEAD
             "is_group": chat.is_group,
             "is_admin": chat.admin_id == request.user.id,
             "participants_count": participants_count,
             "online_count": online_count,
             "members": members,
             "avatar_url": chat.avatar.url if chat.avatar else "",
+=======
+            "is_group": chat.is_group
+>>>>>>> 7dc235b581878fca51f80b9aee88182cd95fe835
         })
 
 

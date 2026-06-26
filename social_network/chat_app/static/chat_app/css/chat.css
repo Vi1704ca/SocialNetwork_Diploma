@@ -2,37 +2,13 @@
     display: none !important;
 }
 
-.chat-header .header-icon-wrapper {
-  position: relative;
-}
-
-#chat-header-status-indicator {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #9ca3af;
-  border: 2px solid #ffffff;
-}
-
-#chat-header-status-indicator.online {
-  background-color: #22c55e;
-}
-
-#chat-header-status-indicator.offline {
-  background-color: #9ca3af;
-}
-
-
 .see-indicator {
   display: none !important;
 }
 
 .see-indicator.seen {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   object-fit: contain;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -41,23 +17,22 @@
 }
 
 .chat-user-button.unread {
-  background: rgba(255, 17, 17, 0.08);
+  background: rgba(255,255,255,0.08);
 }
 
 .chat-unread-count {
   position: absolute;
-  left: 31px;
-  top: 31px;
+  right: -4px;
+  bottom: -4px;
   background: red;
   color: white;
   font-size: 11px;
-  width: 12px;
-  height: 12px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000000;
 }
 
 .avatar-wrapper {

@@ -5,9 +5,9 @@
         <div class="header-left">
             <div class="header-icon-wrapper">
                 <img src="{% static 'chat_app/icons/chat.svg' %}" alt="">
-                <div class="notification-badge group-unread-badge">
+                <div class="notification-badge">
                     <img src="{% static 'icons/logo/red_indicator.svg' %}" alt="">
-                    <span></span>
+                    <span>2</span>
                 </div>
             </div>       
             <h3>Групові чати</h3>
@@ -18,7 +18,7 @@
    
 <div class="chats-list">
     {% for chat in group_chats %} 
-        <button type="button" class="chat-user-button" data-chat-id="{{ chat.id }}" data-chat-type="group">
+        <button type="button" class="chat-user-button" data-chat-id="{{ chat.id }}">
             <div class="users-info-block">
                 <div class="avatar-wrapper">
                     {% if chat.avatar %}

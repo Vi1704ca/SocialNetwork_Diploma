@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils import timezone
 # Create your models here.
 
 user = get_user_model()
@@ -28,11 +27,7 @@ class Chat(models.Model):
     @property
     def last_message_time(self):
         msg = self.last_message
-    
-        if not msg:
-            return ''
-    
-        return timezone.localtime(msg.created_at).strftime('%H:%M')
+        return msg.created_at.strftime('%H:%M') if msg else ''
 
     @property
     def last_message_date(self):

@@ -5,9 +5,9 @@
         <div class="header-left">
             <div class="header-icon-wrapper">
                 <img src="{% static 'chat_app/icons/chat.svg' %}" alt="">
-                <div class="notification-badge personal-unread-badge">
+                <div class="notification-badge">
                     <img src="{% static 'icons/logo/red_indicator.svg' %}" alt="">
-                    <span></span>
+                    <span>2</span>
                 </div>
             </div>    
             <h3>Повідомлення</h3>
@@ -19,8 +19,8 @@
             {% for person in chat.users.all %} 
                 {% if person.id != request.user.id %}
                     
-                <button type="button" class="chat-user-button" data-chat-id="{{ chat.id }}" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}" >
-                <div class="users-info-block">
+                    <button type="button" class="chat-user-button" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
+                        <div class="users-info-block">
                      <div class="avatar-wrapper">
                         
                         <img src="{% static 'chat_app/icons/Jane Cooper.png' %}" alt="{{ person.nickname }}">
@@ -32,9 +32,7 @@
                             <div class="message-meta-wrapper">
                                 <div class="meta-top">
                                     <h4 class="user-name">{{ person.nickname|default:person.email }}</h4>
-                                    <span class="message-time" data-time="{{ chat.last_message.created_at|date:'c' }}">
-                                        {{ chat.last_message_time }}
-                                    </span>
+                                    <span class="message-time">{{ chat.last_message_time }}</span>
                                 </div>
                                 <div class="meta-bottom">
                                     <p class="user-message">{{ chat.last_message_text|truncatechars:28 }}</p>
