@@ -8,6 +8,8 @@ mimetypes.add_type("application/javascript", ".js", True)
 
 load_dotenv()
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-ava#8dmy90_!mb$e#v0+65&v&ls=6bi3&fp-3z!@k%k-n+%^o2')
@@ -140,4 +142,3 @@ STORAGES = {
         'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     }
 }
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
