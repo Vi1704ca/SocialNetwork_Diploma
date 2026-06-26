@@ -7,6 +7,13 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'social_network.settings')
+    
+    # --- ОБНОВЛЯЕМ КОСТЫЛЬ ЗДЕСЬ ---
+    from django.conf import settings
+    # Меняем старый класс на обычный StaticFilesStorage, чтобы он не искал иконку до смерти
+    setattr(settings, 'STATICFILES_STORAGE', 'whitenoise.storage.StaticFilesStorage')
+    # -------------------------
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
